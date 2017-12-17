@@ -1,4 +1,4 @@
-package com.exceptionteam17.tictactoe;
+package com.exceptionteam17.tictactoe.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.model.Preferences;
 import com.exceptionteam17.tictactoe.model.Utils;
 import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
@@ -19,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        removeActionBar();
         Utils.hideKeyboard(this);
         initElements();
 
@@ -53,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Utils.hideKeyboard((Activity) v.getContext());
+                findViewById(R.id.login_fake).requestFocus();
             }
         });
     }
@@ -65,5 +68,11 @@ public class LoginActivity extends AppCompatActivity {
         }
         setOnLoginListener();
         setOnLayoutListener();
+    }
+
+    private void removeActionBar() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
     }
 }
