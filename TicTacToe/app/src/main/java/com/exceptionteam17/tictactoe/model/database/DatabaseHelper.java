@@ -1,4 +1,4 @@
-package com.exceptionteam17.tictactoe.database;
+package com.exceptionteam17.tictactoe.model.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 
 
-    public DatabaseHelper(Context context) {
+    private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
