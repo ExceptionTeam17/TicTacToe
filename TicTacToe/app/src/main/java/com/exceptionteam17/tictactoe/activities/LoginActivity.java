@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.model.Preferences;
@@ -26,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
         removeActionBar();
         Utils.hideKeyboard(this);
         initElements();
-        //hide();
 
     }
 
@@ -42,7 +42,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 Preferences.addStringToPreferences(v.getContext(), "user", enteredUser);
 
-                DatabaseHelper.getInstance(v.getContext()).addUser(enteredUser);
+                ////////////////////////////// only for test
+                if(DatabaseHelper.getInstance(v.getContext()).addUser(enteredUser)){
+                    Toast.makeText(LoginActivity.this, "dobavi" + enteredUser, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "nooooooooooooooo", Toast.LENGTH_SHORT).show();
+                }
+                /////////////////////////////////
 
                 Utils.hideKeyboard((Activity) v.getContext());
 
