@@ -1,10 +1,13 @@
 package com.exceptionteam17.tictactoe.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.exceptionteam17.tictactoe.R;
@@ -23,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         removeActionBar();
         Utils.hideKeyboard(this);
         initElements();
+        //hide();
 
     }
 

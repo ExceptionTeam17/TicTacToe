@@ -7,7 +7,6 @@
     android:id="@+id/login_layout"
     android:focusable="true"
     tools:context="com.exceptionteam17.tictactoe.activities.LoginActivity">
-    <requestFocus/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/text_input_layout3"
@@ -51,6 +50,10 @@
         android:id="@+id/login_fake"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        />
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
+        <requestFocus />
+    </View>
 
 </android.support.constraint.ConstraintLayout>
