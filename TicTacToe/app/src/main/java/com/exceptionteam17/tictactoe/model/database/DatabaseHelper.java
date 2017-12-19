@@ -34,12 +34,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     private static final String USERS_SCORES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_USERS_SCORES +
             " (" + T_USERS_SCORES_COL_1 + " TEXT, " +
-            T_USERS_SCORES_COL_2 + " INTEGER, " +
-            T_USERS_SCORES_COL_3 + " INTEGER, " +
-            T_USERS_SCORES_COL_4 + " INTEGER," +
-            T_USERS_SCORES_COL_5 + " INTEGER, " +
-            T_USERS_SCORES_COL_6 + " INTEGER, " +
-            T_USERS_SCORES_COL_7 + " INTEGER," +
+            T_USERS_SCORES_COL_2 + " INTEGER DEFAULT 0, " +
+            T_USERS_SCORES_COL_3 + " INTEGER DEFAULT 0, " +
+            T_USERS_SCORES_COL_4 + " INTEGER DEFAULT 0, " +
+            T_USERS_SCORES_COL_5 + " INTEGER DEFAULT 0, " +
+            T_USERS_SCORES_COL_6 + " INTEGER DEFAULT 0, " +
+            T_USERS_SCORES_COL_7 + " INTEGER DEFAULT 0," +
             " PRIMARY KEY (" + T_USERS_SCORES_COL_1 + "));";
 
 
@@ -70,25 +70,21 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public boolean addUser(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(T_USERS_SCORES_COL_1, username);
-        contentValues.put(T_USERS_SCORES_COL_2, 0);
-        contentValues.put(T_USERS_SCORES_COL_3, 0);
-        contentValues.put(T_USERS_SCORES_COL_4, 0);
-        contentValues.put(T_USERS_SCORES_COL_5, 0);
-        contentValues.put(T_USERS_SCORES_COL_6, 0);
-        contentValues.put(T_USERS_SCORES_COL_7, 0);
 
-        long b = -1;
-        try {
-            b = db.insert(TABLE_USERS_SCORES, null, contentValues);
-        }  catch (SQLException e){
-            Log.i("TicTacToe database:", "User already exists");
+        String q = "SELECT " + T_USERS_SCORES_COL_1 + " FROM " + TABLE_USERS_SCORES + " WHERE " + T_USERS_SCORES_COL_1 + "=" + username;
+        Cursor c = db.rawQuery(q, null);
+        if (c.getCount() > 0) {
+            return false;
         }
-        return (b != -1);
+        c.close();
+
+        String query = "INSERT INTO " + TABLE_USERS_SCORES + "(" + T_USERS_SCORES_COL_1 + ") " + "VALUES(" + username + ")";
+        db.execSQL(query);
+        return true;
+
     }
 
-    private Integer getUserStat(String username, int coll){
+    private Integer getUserStat(String username, Integer coll){
         SQLiteDatabase db = this.getWritableDatabase();
         String myRawQuery = "SELECT * FROM " + TABLE_USERS_SCORES + " WHERE " + T_USERS_SCORES_COL_1 + " = \"" + username + "\"";
         Cursor c = db.rawQuery(myRawQuery, null);
@@ -127,7 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     /// this is not working properly, must fix
-    private void addUserStat(String username, Integer coll){
+    private void addUserStat(String username, int coll){
         SQLiteDatabase db = this.getWritableDatabase();
         String coll_name = "";
         switch (coll){
@@ -150,10 +146,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 coll_name = T_USERS_SCORES_COL_7;
                 break;
         }
-        Integer i = getUserStat(username, coll) + 1;
-        Log.e("meeee", "" + i);
-        String update = "UPDATE " + TABLE_USERS_SCORES + " SET " + coll_name + " = " + i + " WHERE " + T_USERS_SCORES_COL_1 + " = \"" + username + "\"";
-        db.rawQuery(update, null);
+        int i = getUserStat(username, coll) + 1;
+        String update = "UPDATE " + TABLE_USERS_SCORES + " SET " + coll_name + "=" + i + " WHERE " + T_USERS_SCORES_COL_1 + "=" + username;
+        db.execSQL(update);
     }
 
     public void addUserWin (String username){

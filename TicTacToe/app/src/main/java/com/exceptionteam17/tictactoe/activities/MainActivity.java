@@ -13,14 +13,15 @@ import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         removeActionBar();
         loadFragment(new Fragment_Home());
-        DatabaseHelper.getInstance(this).addUserWin(Preferences.getStringFromPreferences(this,"user"));
-        Log.e("testtt", "" + DatabaseHelper.getInstance(this).getUserWins(Preferences.getStringFromPreferences(this,"user")));
+        username = Preferences.getStringFromPreferences(this,"user");
     }
 
     private void loadFragment(Fragment fragment) {
