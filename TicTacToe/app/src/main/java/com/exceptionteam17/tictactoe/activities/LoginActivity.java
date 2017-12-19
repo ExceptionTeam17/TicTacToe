@@ -1,19 +1,16 @@
 package com.exceptionteam17.tictactoe.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
-import com.exceptionteam17.tictactoe.model.Preferences;
-import com.exceptionteam17.tictactoe.model.Utils;
+import com.exceptionteam17.tictactoe.model.utils.Preferences;
+import com.exceptionteam17.tictactoe.model.utils.Utils;
 import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
@@ -41,15 +38,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 Preferences.addStringToPreferences(v.getContext(), "user", enteredUser);
-
-                ////////////////////////////// only for test
-                if(DatabaseHelper.getInstance(v.getContext()).addUser(enteredUser)){
-                    Toast.makeText(LoginActivity.this, "dobavi" + enteredUser, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LoginActivity.this, "nooooooooooooooo", Toast.LENGTH_SHORT).show();
-                }
-                /////////////////////////////////
-
                 Utils.hideKeyboard((Activity) v.getContext());
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.exceptionteam17.tictactoe.PageAdapter;
+import com.exceptionteam17.tictactoe.model.utils.PageAdapter;
 import com.exceptionteam17.tictactoe.R;
 
 public class Fragment_Home extends Fragment {

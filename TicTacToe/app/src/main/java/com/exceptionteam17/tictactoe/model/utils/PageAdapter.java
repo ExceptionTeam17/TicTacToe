@@ -1,11 +1,11 @@
-package com.exceptionteam17.tictactoe;
+package com.exceptionteam17.tictactoe.model.utils;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.exceptionteam17.tictactoe.fragments.Fragment_Multiplayer;
-import com.exceptionteam17.tictactoe.fragments.Fragment_Singleplayer;
+import com.exceptionteam17.tictactoe.fragments.playingTabs.Fragment_Multiplayer;
+import com.exceptionteam17.tictactoe.fragments.playingTabs.Fragment_Singleplayer;
 
 public class PageAdapter extends FragmentPagerAdapter {
 

@@ -1,4 +1,4 @@
-package com.exceptionteam17.tictactoe.model;
+package com.exceptionteam17.tictactoe.model.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
