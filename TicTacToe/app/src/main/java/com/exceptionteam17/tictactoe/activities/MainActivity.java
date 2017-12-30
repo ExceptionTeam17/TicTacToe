@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity implements ScoreBoardInterfa
         win = findViewById(R.id.toolbar_win);
         lost = findViewById(R.id.toolbar_lost);
         draw = findViewById(R.id.toolbar_draw);
-        usernameView.setText(username);
-        setSingle();
+//        usernameView.setText(username);
+//        setSingle();
     }
 
     public void setSingle(){
