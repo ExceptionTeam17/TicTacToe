@@ -21,6 +21,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity"></activity>
+
+        <receiver android:name=".model.BluetoothReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_FOUND" />
+                <action android:name="android.intent.action.ACTION_DISCOVERY_STARTED" />
+                <action android:name="android.intent.action.ACTION_DISCOVERY_FINISHED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
+
 
 </manifest>
