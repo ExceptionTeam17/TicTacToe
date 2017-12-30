@@ -26,6 +26,7 @@ import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class Fragment_Multiplayer extends Fragment{
@@ -37,11 +38,19 @@ public class Fragment_Multiplayer extends Fragment{
     private static final int REQUEST_PERMISSION = 1;
     private Button start;
     private BluetoothAdapter bluetoothAdapter;
+    private static ArrayList<BluetoothDevice> devices;
     private static String[] PERMISSIONS= {
             Manifest.permission.BLUETOOTH,
             Manifest.permission.BLUETOOTH_ADMIN,
+            Manifest.permission.ACCESS_COARSE_LOCATION
             //Manifest.permission.BLUETOOTH_PRIVILEGED api 19+
     };
+
+    public static void addDevice(BluetoothDevice device) {
+        if (device != null) {
+            devices.add(device);
+        }
+    }
 
     @Nullable
     @Override
@@ -63,6 +72,7 @@ public class Fragment_Multiplayer extends Fragment{
         draw = view.findViewById(R.id.toolbar_draw);
         usernameView.setText(username);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        devices = new ArrayList<>();
         setMulti();
     }
 
@@ -75,8 +85,10 @@ public class Fragment_Multiplayer extends Fragment{
     public static void verifyPermissions(Activity activity) {
         int btAdmin = ActivityCompat.checkSelfPermission(activity, Manifest.permission.BLUETOOTH_ADMIN);
         int bt = ActivityCompat.checkSelfPermission(activity, Manifest.permission.BLUETOOTH);
+        int coarse = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        if (bt != PackageManager.PERMISSION_GRANTED || btAdmin != PackageManager.PERMISSION_GRANTED) {
+        if (bt != PackageManager.PERMISSION_GRANTED || btAdmin != PackageManager.PERMISSION_GRANTED ||
+                coarse != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                     activity,
                     PERMISSIONS,
@@ -89,18 +101,34 @@ public class Fragment_Multiplayer extends Fragment{
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//                startActivity(turnOn);
-                if (bluetoothAdapter == null) {
-                    Toast.makeText(view.getContext(), "NO BLUETOOTH", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!bluetoothAdapter.isEnabled()) {
-                    bluetoothAdapter.enable();
-//                    loadFragment(new Fragment_Gameplay());
-                }
+                startStopBluetooth(); //turn on bluetooth
+                enableBluetoothDiscoverable(); //set discoverable bluetooth
+                discoverDevices(); //start discovering devices
             }
         });
+    }
+
+    private void startStopBluetooth(){
+        if (bluetoothAdapter == null) {
+            Toast.makeText(view.getContext(), "NO BLUETOOTH", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!bluetoothAdapter.isEnabled()) {
+            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivity(turnOn);
+        }
+    }
+
+    private void enableBluetoothDiscoverable() {
+        Intent enableDiscoverable = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        enableDiscoverable.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+        startActivity(enableDiscoverable);
+    }
+
+    private void discoverDevices() {
+        if (!bluetoothAdapter.isDiscovering()) {
+            bluetoothAdapter.startDiscovery();
+        }
     }
 
     private void loadFragment(Fragment fragment) {
