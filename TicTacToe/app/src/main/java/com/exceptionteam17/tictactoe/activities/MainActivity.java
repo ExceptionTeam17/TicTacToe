@@ -7,13 +7,17 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.exceptionteam17.tictactoe.R;
+import com.exceptionteam17.tictactoe.bluetooth.BluetoothConnectionService;
+import com.exceptionteam17.tictactoe.bluetooth.EmptyBluetoothEventListener;
+import com.exceptionteam17.tictactoe.bluetooth.request.DiscoverRequest;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
 import com.exceptionteam17.tictactoe.interfaces.ScoreBoardInterface;
 import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
 
 public class MainActivity extends AppCompatActivity{
-
+    //kotlin test
+    private BluetoothConnectionService bluetoothConnectionService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +25,13 @@ public class MainActivity extends AppCompatActivity{
         removeActionBar();
         InitElements();
         loadFragment(new Fragment_Home());
+        /// kotlin test
+        EmptyBluetoothEventListener listener = new EmptyBluetoothEventListener();
+        bluetoothConnectionService = new BluetoothConnectionService(this);
+        bluetoothConnectionService.setBluetoothEventListener(listener);
+        bluetoothConnectionService.enableBluetoothAdapter();
+        bluetoothConnectionService.discoverDevices();
+
     }
 
     private void loadFragment(Fragment fragment) {
