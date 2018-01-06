@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
@@ -16,6 +17,7 @@ import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText username;
+    private ImageView login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +26,11 @@ public class LoginActivity extends AppCompatActivity {
         removeActionBar();
         Utils.hideKeyboard(this);
         initElements();
-
+        setOnLoginListener();
     }
 
     private void setOnLoginListener(){
-        findViewById(R.id.login_login).setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String enteredUser = username.getText().toString().trim();
@@ -60,11 +62,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initElements(){
         username = findViewById(R.id.login_username);
+        login = findViewById(R.id.login_login);
         String usernameStr = Preferences.getStringFromPreferences(this, "user");
         if(!usernameStr.isEmpty() && !usernameStr.equals(Preferences.EMPTY)){
             username.setText(usernameStr);
         }
-        setOnLoginListener();
         setOnLayoutListener();
     }
 
