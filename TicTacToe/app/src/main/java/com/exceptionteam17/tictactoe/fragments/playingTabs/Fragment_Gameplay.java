@@ -22,6 +22,7 @@ public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
     private ImageView box1, box2, box3, box4, box5, box6, box7, box8, box9;
     private Button back;
     private ImageView[][] field;
+    private Boolean [][] board;
 
     @Nullable
     @Override
@@ -49,6 +50,11 @@ public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
                          {box4, box5, box6},
                          {box7, box8, box9}
                     };
+        board = new Boolean[][]{
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+        };
     }
 
     private void setImagesClickListeners() {
@@ -108,17 +114,19 @@ public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
 
     private boolean changePicture(int x, int y){
         if(isPlayerTurn) {
-            if(true) {
-                field[x][y].setVisibility(View.VISIBLE);
+            if(board[x][y] == null) {
                 field[x][y].setImageResource(R.drawable.x);
                 isPlayerTurn = false;
+                board[x][y] = true;
                 return true;
             }
         }  else {
-            field[x][y].setVisibility(View.VISIBLE);
-            field[x][y].setImageResource(R.drawable.o);
-            isPlayerTurn = true;
-            return true;
+            if(board[x][y] == null) {
+                field[x][y].setImageResource(R.drawable.o);
+                isPlayerTurn = true;
+                board[x][y] = false;
+                return true;
+            }
         }
         return false;
     }
