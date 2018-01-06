@@ -16,6 +16,8 @@ import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
 
 public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
 
+    private boolean isPlayerTurn;
+
     private View view;
     private ImageView box1, box2, box3, box4, box5, box6, box7, box8, box9;
     private Button back;
@@ -31,6 +33,7 @@ public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
     }
 
     private void initialize() {
+        isPlayerTurn = true;
         box1 = view.findViewById(R.id.single_box1);
         box2 = view.findViewById(R.id.single_box2);
         box3 = view.findViewById(R.id.single_box3);
@@ -65,40 +68,31 @@ public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.single_box1:
-                Toast.makeText(view.getContext(), "cukam [0][0]", Toast.LENGTH_SHORT).show();
-                box1.setImageResource(R.drawable.ic_launcher_background);
+                changePicture(0,0);
                 break;
             case R.id.single_box2:
-                Toast.makeText(view.getContext(), "cukam [0][1]", Toast.LENGTH_SHORT).show();
-                box2.setImageResource(R.drawable.ic_launcher_background);
+                changePicture(0,1);
                 break;
             case R.id.single_box3:
-                Toast.makeText(view.getContext(), "cukam [0][2]", Toast.LENGTH_SHORT).show();
-                box3.setImageResource(R.drawable.ic_launcher_background);
+                changePicture(0,2);
                 break;
             case R.id.single_box4:
-                Toast.makeText(view.getContext(), "cukam [1][0]", Toast.LENGTH_SHORT).show();
-                box4.setImageResource(R.drawable.ic_launcher_background);
+                changePicture(1,0);
                 break;
             case R.id.single_box5:
-                Toast.makeText(view.getContext(), "cukam [1][1]", Toast.LENGTH_SHORT).show();
-                box5.setImageResource(R.drawable.ic_launcher_background);
+                changePicture(1,1);
                 break;
             case R.id.single_box6:
-                Toast.makeText(view.getContext(), "cukam [1][2]", Toast.LENGTH_SHORT).show();
-                box6.setImageResource(R.drawable.ic_launcher_background);
+                changePicture(1,2);
                 break;
             case R.id.single_box7:
-                Toast.makeText(view.getContext(), "cukam [2][0]", Toast.LENGTH_SHORT).show();
-                box7.setImageResource(R.drawable.ic_launcher_background);
+                changePicture(2,0);
                 break;
             case R.id.single_box8:
-                Toast.makeText(view.getContext(), "cukam [2][1]", Toast.LENGTH_SHORT).show();
-                box8.setImageResource(R.drawable.ic_launcher_background);
+                changePicture(2,1);
                 break;
             case R.id.single_box9:
-                Toast.makeText(view.getContext(), "cukam [2][2]", Toast.LENGTH_SHORT).show();
-                box9.setImageResource(R.drawable.ic_launcher_background);
+                changePicture(2,2);
                 break;
             case R.id.back_single:
                 loadFragment(new Fragment_Home());
@@ -110,5 +104,22 @@ public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.home_main, fragment);
         ft.commit();
+    }
+
+    private boolean changePicture(int x, int y){
+        if(isPlayerTurn) {
+            if(true) {
+                field[x][y].setVisibility(View.VISIBLE);
+                field[x][y].setImageResource(R.drawable.x);
+                isPlayerTurn = false;
+                return true;
+            }
+        }  else {
+            field[x][y].setVisibility(View.VISIBLE);
+            field[x][y].setImageResource(R.drawable.o);
+            isPlayerTurn = true;
+            return true;
+        }
+        return false;
     }
 }
