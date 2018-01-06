@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,13 @@ import android.widget.Toast;
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
 
-public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
+public final class Fragment_Gameplay extends Fragment implements View.OnClickListener{
 
+    private final static String WINNER_PHONE = "SYSTEM_PHONE";
+    private final static String WINNER_PLAYER = "SYSTEM_PLAYER";
+    private final static String GAME_OVER = "SYSTEM_GAME_OVER";
+    private final static String NO_WINNER = "SYSTEM_NO_WINNER";
     private boolean isPlayerTurn;
-
     private View view;
     private ImageView box1, box2, box3, box4, box5, box6, box7, box8, box9;
     private Button back;
@@ -75,30 +79,39 @@ public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.single_box1:
                 changePicture(0,0);
+                checkForEndGame();
                 break;
             case R.id.single_box2:
                 changePicture(0,1);
+                checkForEndGame();
                 break;
             case R.id.single_box3:
                 changePicture(0,2);
+                checkForEndGame();
                 break;
             case R.id.single_box4:
                 changePicture(1,0);
+                checkForEndGame();
                 break;
             case R.id.single_box5:
                 changePicture(1,1);
+                checkForEndGame();
                 break;
             case R.id.single_box6:
                 changePicture(1,2);
+                checkForEndGame();
                 break;
             case R.id.single_box7:
                 changePicture(2,0);
+                checkForEndGame();
                 break;
             case R.id.single_box8:
                 changePicture(2,1);
+                checkForEndGame();
                 break;
             case R.id.single_box9:
                 changePicture(2,2);
+                checkForEndGame();
                 break;
             case R.id.back_single:
                 loadFragment(new Fragment_Home());
@@ -129,5 +142,90 @@ public class Fragment_Gameplay extends Fragment implements View.OnClickListener{
             }
         }
         return false;
+    }
+
+    private String checkForVictory() {
+        if ((board[0][0] != null && board[0][1] != null && board[0][2] != null) || (board[0][0] != null&& board[0][1] != null&& board[0][2]!= null)) {
+            if (board[0][0] && board[0][1] && board[0][2]) {
+                return WINNER_PLAYER;
+            } else if (!board[0][0] && !board[0][1] && !board[0][2]) {
+                return WINNER_PHONE;
+            }
+        }
+        if ((board[1][0] != null && board[1][1] != null && board[1][2] != null) || (board[1][0] != null && board[1][1] != null && board[1][2]!= null)) {
+            if (board[1][0] && board[1][1] && board[1][2]) {
+                return WINNER_PLAYER;
+            } else if (!board[0][0] && !board[1][1] && !board[1][2]){
+                return WINNER_PHONE;
+            }
+        }
+        if ((board[2][0] != null && board[2][1] != null && board[2][2] != null) || (board[2][0] != null && board[2][1] != null&& board[2][2]!= null)) {
+            if (board[2][0] && board[2][1] && board[2][2]) {
+                return WINNER_PLAYER;
+            } else if(!board[2][0] && !board[2][1] && !board[2][2]) {
+                return WINNER_PHONE;
+            }
+        }
+        if ((board[0][0] != null && board[1][0] != null && board[2][0] != null) || (board[0][0] != null&& board[1][0] != null&& board[2][0]!= null)) {
+            if (board[0][0] && board[1][0] && board[2][0]) {
+                return WINNER_PLAYER;
+            } else if(!board[0][0] && !board[1][0] && !board[2][0]) {
+                return WINNER_PHONE;
+            }
+        }
+        if ((board[0][1] != null && board[1][1] != null && board[2][1] != null) || (board[0][1] != null&& board[1][1] != null&& board[2][1]!= null)) {
+            if (board[0][1] && board[1][1] && board[2][1]) {
+                return WINNER_PLAYER;
+            } else if(!board[0][1] && !board[1][1] && !board[2][1]) {
+                return WINNER_PHONE;
+            }
+        }
+        if ((board[0][2] != null && board[1][2] != null && board[2][2] != null) || (board[0][2] != null&& board[1][2] != null&& board[2][2]!= null)) {
+            if (board[0][2] && board[1][2] && board[2][2]) {
+                return WINNER_PLAYER;
+            } else if(!board[0][2] && !board[1][2] && !board[2][2]) {
+                return WINNER_PHONE;
+            }
+        }
+        if ((board[0][0] != null && board[1][1] != null && board[2][2] != null) || (board[0][0] != null && board[1][1] != null&& board[2][2]!= null)) {
+            if (board[0][0] && board[1][1] && board[2][2]) {
+                return WINNER_PLAYER;
+            } else if(!board[0][0] && !board[1][1] && !board[2][2]) {
+                return WINNER_PHONE;
+            }
+        }
+        if ((board[2][0] != null && board[1][1] != null && board[0][2] != null) || (board[2][0] != null && board[1][1] != null && board[0][2]!= null)) {
+            if (board[2][0] && board[1][1] && board[0][2]) {
+                return WINNER_PLAYER;
+            } else if (!board[2][0] && !board[1][1] && !board[0][2]) {
+                return WINNER_PHONE;
+            }
+        }
+
+        boolean flag = true;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == null) {
+                    flag = false;
+                }
+            }
+        }
+        if (flag) {
+            return GAME_OVER;
+        }
+        return NO_WINNER;
+    }
+
+    private void checkForEndGame() {
+        switch (checkForVictory()) {
+            case GAME_OVER:
+                break;
+            case NO_WINNER:
+                break;
+            case WINNER_PHONE:
+                break;
+            case WINNER_PLAYER:
+                break;
+        }
     }
 }

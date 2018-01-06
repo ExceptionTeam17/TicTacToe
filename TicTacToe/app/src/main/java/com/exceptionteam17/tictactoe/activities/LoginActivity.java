@@ -14,7 +14,7 @@ import com.exceptionteam17.tictactoe.model.utils.Preferences;
 import com.exceptionteam17.tictactoe.model.utils.Utils;
 import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 
-public class LoginActivity extends AppCompatActivity {
+public final class LoginActivity extends AppCompatActivity {
 
     private EditText username;
     private ImageView login;
