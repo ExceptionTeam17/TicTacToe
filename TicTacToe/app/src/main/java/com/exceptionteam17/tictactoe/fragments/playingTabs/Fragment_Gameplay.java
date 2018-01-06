@@ -1,5 +1,6 @@
 package com.exceptionteam17.tictactoe.fragments.playingTabs;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
+
+import libs.mjn.prettydialog.PrettyDialog;
+import libs.mjn.prettydialog.PrettyDialogCallback;
 
 public final class Fragment_Gameplay extends Fragment implements View.OnClickListener{
 
@@ -155,7 +159,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
         if ((board[1][0] != null && board[1][1] != null && board[1][2] != null) || (board[1][0] != null && board[1][1] != null && board[1][2]!= null)) {
             if (board[1][0] && board[1][1] && board[1][2]) {
                 return WINNER_PLAYER;
-            } else if (!board[0][0] && !board[1][1] && !board[1][2]){
+            } else if (!board[1][0] && !board[1][1] && !board[1][2]){
                 return WINNER_PHONE;
             }
         }
@@ -219,13 +223,52 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     private void checkForEndGame() {
         switch (checkForVictory()) {
             case GAME_OVER:
+                showAlert("DRAW", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
             case NO_WINNER:
                 break;
             case WINNER_PHONE:
+                showAlert("YOU LOST", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
             case WINNER_PLAYER:
+                showAlert("YOU WON!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
         }
+    }
+
+    private void showAlert(String title, String msg, int icon, String posBtnText, String negativeBtnText){
+        final PrettyDialog prettyDialog = new PrettyDialog(view.getContext());
+        prettyDialog.setCanceledOnTouchOutside(false);
+        prettyDialog
+                .setTitle(title)
+                .setMessage(msg)
+                .setIcon(icon)
+                .addButton(
+                        posBtnText,     // button text
+                        R.color.pdlg_color_white,  // button text color
+                        R.color.pdlg_color_green,  // button background color //TODO change color
+                        new PrettyDialogCallback() {  // button OnClick listener
+                            @Override
+                            public void onClick() {
+                                loadFragment(new Fragment_Gameplay());
+                                prettyDialog.cancel();
+                                // Do what you gotta do
+                            }
+                        }
+                )
+                .addButton(
+                        negativeBtnText,     // button text
+                        R.color.pdlg_color_white,  // button text color
+                        R.color.pdlg_color_red,  // button background color
+                        new PrettyDialogCallback() {  // button OnClick listener
+                            @Override
+                            public void onClick() {
+                                loadFragment(new Fragment_Home());
+                                prettyDialog.cancel();
+                                // Do what you gotta do
+                            }
+                        }
+                )
+                .show();
     }
 }

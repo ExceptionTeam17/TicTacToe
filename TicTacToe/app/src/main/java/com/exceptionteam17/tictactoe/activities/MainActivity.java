@@ -16,8 +16,7 @@ import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
 
 public class MainActivity extends AppCompatActivity{
-    //kotlin test
-//    private BluetoothConnectionService bluetoothConnectionService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +24,6 @@ public class MainActivity extends AppCompatActivity{
         removeActionBar();
         InitElements();
         loadFragment(new Fragment_Home());
-        /// kotlin test
-        EmptyBluetoothEventListener listener = new EmptyBluetoothEventListener();
-//        bluetoothConnectionService = new BluetoothConnectionService(this);
-//        bluetoothConnectionService.setBluetoothEventListener(listener);
-//        bluetoothConnectionService.enableBluetoothAdapter();
-//        bluetoothConnectionService.discoverDevices();
     }
 
     private void loadFragment(Fragment fragment) {

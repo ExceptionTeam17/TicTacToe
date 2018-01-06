@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.126"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:src="@drawable/transparent" />
 
     <ImageView
         android:id="@+id/single_box2"
@@ -36,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.126"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:src="@drawable/transparent" />
 
     <ImageView
         android:id="@+id/single_box3"
@@ -52,7 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.126"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:src="@drawable/transparent" />
 
     <View
         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.351"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:src="@drawable/transparent" />
 
     <ImageView
         android:id="@+id/single_box5"
@@ -96,7 +96,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.351"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:src="@drawable/transparent" />
 
     <ImageView
         android:id="@+id/single_box6"
@@ -112,7 +112,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.351"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:src="@drawable/transparent" />
 
     <View
         android:layout_width="match_parent"
@@ -173,7 +173,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.579"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:src="@drawable/transparent" />
 
     <ImageView
         android:id="@+id/single_box8"
@@ -188,7 +188,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.579"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:src="@drawable/transparent" />
 
     <ImageView
         android:id="@+id/single_box9"
@@ -202,7 +202,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.579"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        android:src="@drawable/transparent" />
 
     <Button
         android:id="@+id/back_single"
