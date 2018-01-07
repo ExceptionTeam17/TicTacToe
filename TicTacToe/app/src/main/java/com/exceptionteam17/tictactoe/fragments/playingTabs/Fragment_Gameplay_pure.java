@@ -1,33 +1,28 @@
 package com.exceptionteam17.tictactoe.fragments.playingTabs;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
 
-import java.util.Random;
-
 import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
 
-public final class Fragment_Gameplay extends Fragment implements View.OnClickListener{
+public final class Fragment_Gameplay_pure extends Fragment implements View.OnClickListener{
 
     private final static String WINNER_PHONE = "SYSTEM_PHONE";
     private final static String WINNER_PLAYER = "SYSTEM_PLAYER";
     private final static String GAME_OVER = "SYSTEM_GAME_OVER";
     private final static String NO_WINNER = "SYSTEM_NO_WINNER";
-    private boolean isPlayerTurn, isSimple;
+    private boolean isPlayerTurn;
     private View view;
     private ImageView box1, box2, box3, box4, box5, box6, box7, box8, box9;
     private Button back;
@@ -40,16 +35,11 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
         view = inflater.inflate(R.layout.fragment_gameplay, container, false);
         initialize();
         setImagesClickListeners();
-        if(!isPlayerTurn){
-            Random r = new Random();
-            play(r.nextInt(3), r.nextInt(3));
-        }
         return view;
     }
 
     private void initialize() {
-        isPlayerTurn = new Random().nextBoolean();
-        isSimple = true; //TODO get this from bundle or shared prefs,
+        isPlayerTurn = true;
         box1 = view.findViewById(R.id.single_box1);
         box2 = view.findViewById(R.id.single_box2);
         box3 = view.findViewById(R.id.single_box3);
@@ -90,30 +80,39 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
         switch (v.getId()) {
             case R.id.single_box1:
                 changePicture(0,0);
+                checkForEndGame();
                 break;
             case R.id.single_box2:
-                play(0,1);
+                changePicture(0,1);
+                checkForEndGame();
                 break;
             case R.id.single_box3:
-                play(0,2);
+                changePicture(0,2);
+                checkForEndGame();
                 break;
             case R.id.single_box4:
-                play(1,0);
+                changePicture(1,0);
+                checkForEndGame();
                 break;
             case R.id.single_box5:
-                play(1,1);
+                changePicture(1,1);
+                checkForEndGame();
                 break;
             case R.id.single_box6:
-                play(1,2);
+                changePicture(1,2);
+                checkForEndGame();
                 break;
             case R.id.single_box7:
-                play(2,0);
+                changePicture(2,0);
+                checkForEndGame();
                 break;
             case R.id.single_box8:
-                play(2,1);
+                changePicture(2,1);
+                checkForEndGame();
                 break;
             case R.id.single_box9:
-                play(2,2);
+                changePicture(2,2);
+                checkForEndGame();
                 break;
             case R.id.back_single:
                 loadFragment(new Fragment_Home());
@@ -121,18 +120,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
         }
     }
 
-    private void play(int x, int y){
-        if(changePicture(x,y)){
-            if(!isPlayerTurn){
-                computerMove();
-            }
-        }
-    }
-
     private void loadFragment(Fragment fragment) {
-        if(getActivity() == null){
-            return;
-        }
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.home_main, fragment);
         ft.commit();
@@ -144,7 +132,6 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 field[x][y].setImageResource(R.drawable.x);
                 isPlayerTurn = false;
                 board[x][y] = true;
-                checkForEndGame();
                 return true;
             }
         }  else {
@@ -152,7 +139,6 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 field[x][y].setImageResource(R.drawable.o);
                 isPlayerTurn = true;
                 board[x][y] = false;
-                checkForEndGame();
                 return true;
             }
         }
@@ -261,7 +247,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {
-                                loadFragment(new Fragment_Gameplay());
+                                loadFragment(new Fragment_Gameplay_pure());
                                 prettyDialog.cancel();
                                 // Do what you gotta do
                             }
@@ -281,19 +267,5 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                         }
                 )
                 .show();
-    }
-
-    private void computerMove(){
-        if(isSimple){
-            int position = new Random().nextInt(9);
-            Log.e("test", "" + position);
-            while(board[position/3][position%3] != null){
-                position +=1;
-                position %=9;
-            }
-            changePicture(position / 3,position % 3);
-        } else {
-            //TODO think for algorithm
-        }
     }
 }
