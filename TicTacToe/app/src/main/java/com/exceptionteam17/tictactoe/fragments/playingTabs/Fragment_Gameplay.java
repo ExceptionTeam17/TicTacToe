@@ -27,7 +27,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     private final static String WINNER_PLAYER = "SYSTEM_PLAYER";
     private final static String GAME_OVER = "SYSTEM_GAME_OVER";
     private final static String NO_WINNER = "SYSTEM_NO_WINNER";
-    private boolean isPlayerTurn, isSimple;
+    private boolean isPlayerTurn, isSimple, isGameOver;
     private View view;
     private ImageView box1, box2, box3, box4, box5, box6, box7, box8, box9;
     private Button back;
@@ -50,6 +50,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     private void initialize() {
         isPlayerTurn = new Random().nextBoolean();
         isSimple = true; //TODO get this from bundle or shared prefs,
+        isGameOver = false;
         box1 = view.findViewById(R.id.single_box1);
         box2 = view.findViewById(R.id.single_box2);
         box3 = view.findViewById(R.id.single_box3);
@@ -89,7 +90,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.single_box1:
-                changePicture(0,0);
+                play(0,0);
                 break;
             case R.id.single_box2:
                 play(0,1);
@@ -123,8 +124,11 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
 
     private void play(int x, int y){
         if(changePicture(x,y)){
-            if(!isPlayerTurn){
+            if(!isPlayerTurn && !isGameOver){
                 computerMove();
+                Log.e("ivan", "NOW ITS phone move");
+            } else {
+                Log.e("ivan", "NOW ITS player move");
             }
         }
     }
@@ -143,16 +147,20 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
             if(board[x][y] == null) {
                 field[x][y].setImageResource(R.drawable.x);
                 isPlayerTurn = false;
+                Log.e("ivan", ""+isPlayerTurn);
                 board[x][y] = true;
                 checkForEndGame();
+                Log.e("ivan", "player pic changed");
                 return true;
             }
         }  else {
             if(board[x][y] == null) {
                 field[x][y].setImageResource(R.drawable.o);
                 isPlayerTurn = true;
+                Log.e("ivan", ""+isPlayerTurn);
                 board[x][y] = false;
                 checkForEndGame();
+                Log.e("ivan", "phone pic changed");
                 return true;
             }
         }
@@ -234,16 +242,21 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     private void checkForEndGame() {
         switch (checkForVictory()) {
             case GAME_OVER:
+                isGameOver = true;
                 showAlert("DRAW", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
             case NO_WINNER:
                 break;
             case WINNER_PHONE:
+                isGameOver = true;
                 showAlert("YOU LOST", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
             case WINNER_PLAYER:
+                isGameOver = true;
                 showAlert("YOU WON!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
+            default:
+                Log.e("ivan", "shit");
         }
     }
 
@@ -284,7 +297,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     }
 
     private void computerMove(){
-        if(isSimple){
+//        if(isSimple){
             int position = new Random().nextInt(9);
             Log.e("test", "" + position);
             while(board[position/3][position%3] != null){
@@ -292,8 +305,9 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 position %=9;
             }
             changePicture(position / 3,position % 3);
-        } else {
-            //TODO think for algorithm
         }
-    }
+//        else {
+//            //TODO think for algorithm
+//        }
+//    }
 }
