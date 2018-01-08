@@ -246,6 +246,19 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 showAlert("DRAW", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
             case NO_WINNER:
+                if(!isPlayerTurn){
+                    int i = 0;
+                    for(int j =0; j <3; j++){
+                        for(int k = 0; k<3; k++){
+                            if(board[j][k] == null){
+                                i++;
+                            }
+                        }
+                    }
+                    if(i == 1){
+                        computerMove();
+                    }
+                }
                 break;
             case WINNER_PHONE:
                 isGameOver = true;
