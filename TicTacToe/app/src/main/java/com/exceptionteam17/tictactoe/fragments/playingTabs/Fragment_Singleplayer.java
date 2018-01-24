@@ -1,6 +1,7 @@
 package com.exceptionteam17.tictactoe.fragments.playingTabs;
 
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.exceptionteam17.tictactoe.R;
+import com.exceptionteam17.tictactoe.activities.OnePlayerDificult;
 import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
 
@@ -54,7 +56,9 @@ public class Fragment_Singleplayer extends Fragment{
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new Fragment_Gameplay());
+//                loadFragment(new Fragment_Gameplay());
+                Intent i = new Intent(getActivity(), OnePlayerDificult.class);
+                 getActivity().startActivity(i);
             }
         });
     }
