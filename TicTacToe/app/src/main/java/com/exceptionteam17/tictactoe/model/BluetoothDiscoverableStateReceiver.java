@@ -10,6 +10,7 @@ public class BluetoothDiscoverableStateReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
+        Log.e("blaaaaa", intent.getAction());
 
         if(action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
 

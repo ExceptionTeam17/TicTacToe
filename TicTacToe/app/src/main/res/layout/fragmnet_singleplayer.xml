@@ -2,14 +2,49 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/darkGrey">
 
     <Button
         android:id="@+id/start_gameplay_single"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="START ON DIFICULT LEVEL"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:background="@drawable/btn_green_background"
+        android:text="play"
+        android:paddingEnd="10dp"
         android:layout_gravity="center_horizontal"/>
+
+    <RadioGroup
+        android:id="@+id/single_radiogroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal">
+
+        <RadioButton
+            android:id="@+id/single_radio_easy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:text="easy"
+            android:textColor="@color/white"
+            android:checked="true"
+            android:layout_margin="10dp"/>
+        <RadioButton
+            android:id="@+id/single_radio_hard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:text="hard"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"/>
+
+    </RadioGroup>
 
     <View
         android:layout_width="match_parent"

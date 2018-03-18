@@ -121,13 +121,14 @@ public class Fragment_Multiplayer extends Fragment{
 
     private void enableBluetoothDiscoverable() {
         Intent enableDiscoverable = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        enableDiscoverable.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+        enableDiscoverable.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
         startActivity(enableDiscoverable);
     }
 
     private void discoverDevices() {
         if (!bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.startDiscovery();
+            Log.e("Tuka", "sum");
         }
     }
 

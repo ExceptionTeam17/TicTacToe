@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/login_layout"
     android:focusable="true"
-    android:background="#4D4D4D"
+    android:background="@color/darkGrey"
     tools:context="com.exceptionteam17.tictactoe.activities.LoginActivity">
 
     <android.support.design.widget.TextInputLayout
@@ -36,11 +36,14 @@
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 
-    <ImageView
+    <Button
         android:id="@+id/login_login"
+        android:text="Enter"
         android:layout_width="230dp"
         android:layout_height="43dp"
-        android:src="@drawable/button_enter"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:background="@drawable/btn_green_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
