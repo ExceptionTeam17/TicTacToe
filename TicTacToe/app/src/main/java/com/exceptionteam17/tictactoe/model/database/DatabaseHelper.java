@@ -3,19 +3,17 @@ package com.exceptionteam17.tictactoe.model.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-    public static final Integer WINS = 1;
-    public static final Integer DRAWS = 2;
-    public static final Integer LOSES = 3;
-    public static final Integer WINS_MULTI = 4;
-    public static final Integer DRAWS_MULTI = 5;
-    public static final Integer LOSES_MULTI = 6;
+    private static final Integer WINS = 1;
+    private static final Integer DRAWS = 2;
+    private static final Integer LOSES = 3;
+    private static final Integer WINS_MULTI = 4;
+    private static final Integer DRAWS_MULTI = 5;
+    private static final Integer LOSES_MULTI = 6;
 
     private static DatabaseHelper instance;
 

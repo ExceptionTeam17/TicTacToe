@@ -43,9 +43,16 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
         view = inflater.inflate(R.layout.fragment_gameplay, container, false);
         initialize();
         setImagesClickListeners();
+
         if(!isPlayerTurn){
             Random r = new Random();
             play(r.nextInt(3), r.nextInt(3));
+        }
+
+        if(getArguments() != null && getArguments().containsKey("isSimple")){
+            isSimple = getArguments().getBoolean("isSimple");
+        } else {
+            isSimple = true;
         }
         return view;
     }
@@ -53,7 +60,6 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     private void initialize() {
         db = DatabaseHelper.getInstance(this.getContext());
         isPlayerTurn = new Random().nextBoolean();
-        isSimple = true; //TODO get this from bundle or shared prefs,
         isGameOver = false;
         box1 = view.findViewById(R.id.single_box1);
         box2 = view.findViewById(R.id.single_box2);
