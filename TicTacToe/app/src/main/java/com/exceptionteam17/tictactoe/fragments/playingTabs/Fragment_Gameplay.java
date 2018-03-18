@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
+import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
+import com.exceptionteam17.tictactoe.model.utils.Preferences;
 
 import java.util.Random;
 
@@ -33,6 +35,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     private Button back;
     private ImageView[][] field;
     private Boolean [][] board;
+    private DatabaseHelper db;
 
     @Nullable
     @Override
@@ -48,6 +51,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     }
 
     private void initialize() {
+        db = DatabaseHelper.getInstance(this.getContext());
         isPlayerTurn = new Random().nextBoolean();
         isSimple = true; //TODO get this from bundle or shared prefs,
         isGameOver = false;
@@ -244,6 +248,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
             case GAME_OVER:
                 isGameOver = true;
                 showAlert("DRAW", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                db.addUserDraw(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             case NO_WINNER:
                 if(!isPlayerTurn){
@@ -263,10 +268,12 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
             case WINNER_PHONE:
                 isGameOver = true;
                 showAlert("YOU LOST", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                db.addUserLose(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             case WINNER_PLAYER:
                 isGameOver = true;
                 showAlert("YOU WON!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                db.addUserWin(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             default:
                 Log.e("ivan", "shit");

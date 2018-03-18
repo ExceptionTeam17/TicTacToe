@@ -4,16 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.exceptionteam17.tictactoe.R;
-import com.exceptionteam17.tictactoe.bluetooth.BluetoothConnectionService;
-import com.exceptionteam17.tictactoe.bluetooth.EmptyBluetoothEventListener;
-import com.exceptionteam17.tictactoe.bluetooth.request.DiscoverRequest;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
-import com.exceptionteam17.tictactoe.interfaces.ScoreBoardInterface;
-import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
-import com.exceptionteam17.tictactoe.model.utils.Preferences;
 
 public class MainActivity extends AppCompatActivity{
 

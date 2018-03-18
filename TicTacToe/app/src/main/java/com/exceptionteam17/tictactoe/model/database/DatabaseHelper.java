@@ -71,16 +71,27 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public boolean addUser(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String q = "SELECT " + T_USERS_SCORES_COL_1 + " FROM " + TABLE_USERS_SCORES + " WHERE " + T_USERS_SCORES_COL_1 + "=" + username;
+        String q = "SELECT " + T_USERS_SCORES_COL_1 + " FROM " + TABLE_USERS_SCORES + " WHERE " + T_USERS_SCORES_COL_1 + " = \"" + username + "\"";
         Cursor c = db.rawQuery(q, null);
         if (c.getCount() > 0) {
+            c.close();
             return false;
         }
         c.close();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(T_USERS_SCORES_COL_1, username);
+        contentValues.put(T_USERS_SCORES_COL_2, 0);
+        contentValues.put(T_USERS_SCORES_COL_3, 0);
+        contentValues.put(T_USERS_SCORES_COL_4, 0);
+        contentValues.put(T_USERS_SCORES_COL_5, 0);
+        contentValues.put(T_USERS_SCORES_COL_6, 0);
+        contentValues.put(T_USERS_SCORES_COL_7, 0);
 
-        String query = "INSERT INTO " + TABLE_USERS_SCORES + "(" + T_USERS_SCORES_COL_1 + ") " + "VALUES(" + username + ")";
-        db.execSQL(query);
-        return true;
+        long b = db.insert(TABLE_USERS_SCORES, null, contentValues);
+        return (b != -1);
+//        String query = "INSERT INTO " + TABLE_USERS_SCORES + "(" + T_USERS_SCORES_COL_1 + ") " + "VALUES(" + username + ")";
+//        db.execSQL(query);
+//        return true;
 
     }
 
@@ -147,7 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 break;
         }
         int i = getUserStat(username, coll) + 1;
-        String update = "UPDATE " + TABLE_USERS_SCORES + " SET " + coll_name + "=" + i + " WHERE " + T_USERS_SCORES_COL_1 + "=" + username;
+        String update = "UPDATE " + TABLE_USERS_SCORES + " SET " + coll_name + " = " + i + " WHERE " + T_USERS_SCORES_COL_1 + " = \"" + username + "\"";
         db.execSQL(update);
     }
 

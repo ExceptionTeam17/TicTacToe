@@ -42,7 +42,7 @@ public final class LoginActivity extends AppCompatActivity {
 
                 Preferences.addStringToPreferences(v.getContext(), "user", enteredUser);
                 Utils.hideKeyboard((Activity) v.getContext());
-
+                DatabaseHelper.getInstance(v.getContext()).addUser(enteredUser);
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("user", enteredUser);
                 startActivity(intent);
