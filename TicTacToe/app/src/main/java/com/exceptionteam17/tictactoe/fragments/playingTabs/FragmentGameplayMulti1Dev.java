@@ -13,6 +13,10 @@ import android.widget.TextView;
 
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
+import com.exceptionteam17.tictactoe.model.utils.Preferences;
+import com.exceptionteam17.tictactoe.model.utils.Utils;
+
+import java.util.Random;
 
 import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
@@ -30,6 +34,7 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
     private ImageView[][] field;
     private Boolean [][] board;
     private TextView turn;
+    private String username, secondPlauyerName;
 
     @Nullable
     @Override
@@ -41,10 +46,12 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
     }
 
     private void initialize() {
-        isPlayerTurn = true;
+        isPlayerTurn = new Random().nextBoolean();
         turn = view.findViewById(R.id.text_gameplay);
         turn.setVisibility(View.VISIBLE);
-        turn.setText("test");
+        username = Preferences.getStringFromPreferences(view.getContext(),"user");
+        secondPlauyerName = getArguments().getString("secondPlayer", "secondPlayer");
+        turn.setText((isPlayerTurn? username : secondPlauyerName) + ":");
         box1 = view.findViewById(R.id.single_box1);
         box2 = view.findViewById(R.id.single_box2);
         box3 = view.findViewById(R.id.single_box3);
@@ -132,7 +139,12 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
     }
 
     private void restartGame(){
-
+        final FragmentGameplayMulti1Dev fr = new FragmentGameplayMulti1Dev();
+        Bundle bundle = new Bundle();
+        bundle.putString("secondPlayer", secondPlauyerName);
+        fr.setArguments(bundle);
+        Utils.hideKeyboard(getActivity());
+        loadFragment(fr);
     }
 
     private boolean changePicture(int x, int y){
@@ -232,6 +244,7 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
                 showAlert("DRAW", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
             case NO_WINNER:
+                turn.setText((isPlayerTurn? username : secondPlauyerName) + ":");
                 break;
             case WINNER_PHONE:
                 showAlert("YOU LOST", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
@@ -256,7 +269,7 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {
-                                loadFragment(new FragmentGameplayMulti1Dev());
+                                restartGame();
                                 prettyDialog.cancel();
                                 // Do what you gotta do
                             }
