@@ -2,6 +2,7 @@ package com.exceptionteam17.tictactoe.fragments.playingTabs;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -18,13 +19,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
+import com.exceptionteam17.tictactoe.activities.MainActivity;
 import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
+import com.exceptionteam17.tictactoe.model.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -36,7 +41,7 @@ public class Fragment_Multiplayer extends Fragment{
     private TextView win, draw, lost, usernameView;
     private DatabaseHelper db;
     private static final int REQUEST_PERMISSION = 1;
-    private Button start;
+    private Button startMulti2Dev, startMulti1Dev;
     private BluetoothAdapter bluetoothAdapter;
     private static ArrayList<BluetoothDevice> devices;
     private static String[] PERMISSIONS= {
@@ -64,7 +69,8 @@ public class Fragment_Multiplayer extends Fragment{
 
     private void initialize() {
         db = DatabaseHelper.getInstance(view.getContext());
-        start = view.findViewById(R.id.start_gameplay_multi);
+        startMulti2Dev = view.findViewById(R.id.start_gameplay_multi);
+        startMulti1Dev = view.findViewById(R.id.start_gameplay_multi_same);
         username = Preferences.getStringFromPreferences(view.getContext(),"user");
         usernameView = view.findViewById(R.id.toolbar_username);
         win = view.findViewById(R.id.toolbar_win);
@@ -73,6 +79,7 @@ public class Fragment_Multiplayer extends Fragment{
         usernameView.setText(username);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         devices = new ArrayList<>();
+
         setMulti();
     }
 
@@ -98,12 +105,48 @@ public class Fragment_Multiplayer extends Fragment{
     }
 
     private void startGame() {
-        start.setOnClickListener(new View.OnClickListener() {
+        startMulti2Dev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startStopBluetooth(); //turn on bluetooth
                 enableBluetoothDiscoverable(); //set discoverable bluetooth
                 discoverDevices(); //start discovering devices
+            }
+        });
+
+        startMulti1Dev.setOnClickListener(new View.OnClickListener() {
+            Dialog dialog = new Dialog(getContext(), R.style.Theme_Dialog);
+            @Override
+            public void onClick(View v) {
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.dialog_second_username);
+                ((Button)dialog.findViewById(R.id.btn_2user_cancel)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                ((Button)dialog.findViewById(R.id.btn_2user_ok)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String secondUser = ((EditText)dialog.findViewById(R.id.second_username_edit)).getText().toString();
+                        if(secondUser.isEmpty()){
+                            ((EditText) dialog.findViewById(R.id.second_username_edit)).setError("Enter valid username");
+                            return;
+                        }
+                        final FragmentGameplayMulti1Dev fr = new FragmentGameplayMulti1Dev();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("secondPlayer", secondUser);
+                        fr.setArguments(bundle);
+                        dialog.dismiss();
+                        Utils.hideKeyboard(getActivity());
+                        loadFragment(fr);
+                    }
+                });
+                dialog.show();
+
             }
         });
     }
