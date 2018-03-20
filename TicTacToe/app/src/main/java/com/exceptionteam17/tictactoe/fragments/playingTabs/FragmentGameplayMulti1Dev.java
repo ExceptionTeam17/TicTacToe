@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
+import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
 import com.exceptionteam17.tictactoe.model.utils.Utils;
 
@@ -22,6 +23,8 @@ import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
 
 public final class FragmentGameplayMulti1Dev extends Fragment implements View.OnClickListener{
+
+    //TODO add different layouts for different resolutions
 
     private final static String WINNER_PHONE = "SYSTEM_PHONE";
     private final static String WINNER_PLAYER = "SYSTEM_PLAYER";
@@ -35,6 +38,7 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
     private Boolean [][] board;
     private TextView turn;
     private String username, secondPlauyerName;
+    private DatabaseHelper db;
 
     @Nullable
     @Override
@@ -46,12 +50,13 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
     }
 
     private void initialize() {
+        db = DatabaseHelper.getInstance(this.getContext());
         isPlayerTurn = new Random().nextBoolean();
         turn = view.findViewById(R.id.text_gameplay);
         turn.setVisibility(View.VISIBLE);
         username = Preferences.getStringFromPreferences(view.getContext(),"user");
         secondPlauyerName = getArguments().getString("secondPlayer", "secondPlayer");
-        turn.setText((isPlayerTurn? username : secondPlauyerName) + ":");
+        turn.setText((isPlayerTurn? username : secondPlauyerName) + " :");
         box1 = view.findViewById(R.id.single_box1);
         box2 = view.findViewById(R.id.single_box2);
         box3 = view.findViewById(R.id.single_box3);
@@ -242,15 +247,18 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
         switch (checkForVictory()) {
             case GAME_OVER:
                 showAlert("DRAW", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                db.addUserDrawMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             case NO_WINNER:
                 turn.setText((isPlayerTurn? username : secondPlauyerName) + ":");
                 break;
             case WINNER_PHONE:
-                showAlert("YOU LOST", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                showAlert("Player " + secondPlauyerName + " WIN!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                db.addUserLoseMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             case WINNER_PLAYER:
-                showAlert("YOU WON!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                showAlert("Player " + username + " WIN!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                db.addUserWinMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
         }
     }
