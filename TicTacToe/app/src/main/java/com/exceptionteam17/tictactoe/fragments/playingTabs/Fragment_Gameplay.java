@@ -34,6 +34,8 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     private ImageView box1, box2, box3, box4, box5, box6, box7, box8, box9;
     private Button back;
     private ImageView[][] field;
+    private int a [][];
+    private int sum;
     private Boolean [][] board;
     private DatabaseHelper db;
 
@@ -45,20 +47,24 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
         setImagesClickListeners();
 
         if(!isPlayerTurn){
-            Random r = new Random();
-            play(r.nextInt(3), r.nextInt(3));
+            if(isSimple) {
+                Random r = new Random();
+                play(r.nextInt(3), r.nextInt(3));
+            } else {
+                changePicture(0,0);
+            }
         }
 
-        if(getArguments() != null && getArguments().containsKey("isSimple")){
-            isSimple = getArguments().getBoolean("isSimple");
-        } else {
-            isSimple = true;
-        }
         return view;
     }
 
     private void initialize() {
         db = DatabaseHelper.getInstance(this.getContext());
+        if(getArguments() != null && getArguments().containsKey("isSimple")){
+            isSimple = getArguments().getBoolean("isSimple");
+        } else {
+            isSimple = true;
+        }
         isPlayerTurn = new Random().nextBoolean();
         isGameOver = false;
         box1 = view.findViewById(R.id.single_box1);
@@ -80,6 +86,12 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 {null, null, null},
                 {null, null, null},
                 {null, null, null}
+        };
+
+        a = new int[][]{
+                {0,0,0},
+                {0,0,0},
+                {0,0,0}
         };
     }
 
@@ -159,6 +171,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 isPlayerTurn = false;
                 Log.e("ivan", ""+isPlayerTurn);
                 board[x][y] = true;
+                a[x][y]+=2;
                 checkForEndGame();
                 Log.e("ivan", "player pic changed");
                 return true;
@@ -169,6 +182,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 isPlayerTurn = true;
                 Log.e("ivan", ""+isPlayerTurn);
                 board[x][y] = false;
+                a[x][y]++;
                 checkForEndGame();
                 Log.e("ivan", "phone pic changed");
                 return true;
@@ -300,7 +314,11 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {
-                                loadFragment(new Fragment_Gameplay());
+                                final Fragment_Gameplay fr = new Fragment_Gameplay();
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("isSimple", isSimple);
+                                fr.setArguments(bundle);
+                                loadFragment(fr);
                                 prettyDialog.cancel();
                                 // Do what you gotta do
                             }
@@ -323,7 +341,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
     }
 
     private void computerMove(){
-//        if(isSimple){
+        if(isSimple){
             int position = new Random().nextInt(9);
             Log.e("test", "" + position);
             while(board[position/3][position%3] != null){
@@ -331,9 +349,213 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 position %=9;
             }
             changePicture(position / 3,position % 3);
+        } else {
+            makeOwn();
         }
-//        else {
-//            //TODO think for algorithm
-//        }
-//    }
+    }
+
+    public void makeOwn() {
+        sum = 0;
+
+        for (int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                sum += a[i][j];
+            }
+        }
+
+        if (a[0][0] == a[0][1] && a[0][0] == 1 && a[0][2] == 0) {
+            changePicture(0,2);
+
+        }else if (a[0][1] == a[0][2] && a[0][1] == 1 && a[0][0] == 0) {
+            changePicture(0,0);
+
+        }else if (a[0][0] == a[0][2] && a[0][0] == 1 && a[0][1] == 0) {
+            changePicture(0,1);
+
+        }else if (a[1][0] == a[1][1] && a[1][0] == 1 && a[1][2] == 0) {
+            changePicture(1,2);
+
+        }else if (a[1][1] == a[1][2] && a[1][1] == 1 && a[1][0] == 0) {
+            changePicture(1,0);
+
+        }else if (a[1][0] == a[1][2] && a[1][0] == 1 && a[1][1] == 0) {
+            changePicture(1,1);
+
+        }else if (a[2][0] == a[2][1] && a[2][0] == 1 && a[2][2] == 0) {
+            changePicture(2,2);
+
+        }else if (a[2][1] == a[2][2] && a[2][1] == 1 && a[2][0] == 0) {
+            changePicture(2,0);
+
+        }else if (a[2][0] == a[2][2] && a[2][0] == 1 && a[2][1] == 0) {
+            changePicture(2,1);
+
+        }else if (a[0][0] == a[1][0] && a[0][0] == 1 && a[2][0] == 0) {
+            changePicture(2,0);
+
+        }else if (a[1][0] == a[2][0] && a[1][0] == 1 && a[0][0] == 0) {
+            changePicture(0,0);
+
+        }else if (a[0][0] == a[2][0] && a[0][0] == 1 && a[1][0] == 0) {
+            changePicture(1,0);
+
+        }else if (a[0][1] == a[1][1] && a[0][1] == 1 && a[2][1] == 0) {
+            changePicture(2,1);
+
+        }else if (a[1][1] == a[2][1] && a[1][1] == 1 && a[0][1] == 0) {
+            changePicture(0,1);
+
+        }else if (a[0][1] == a[2][1] && a[0][1] == 1 && a[1][1] == 0) {
+            changePicture(1,1);
+
+        }else if (a[0][2] == a[1][2] && a[0][2] == 1 && a[2][2] == 0) {
+            changePicture(2,2);
+
+        }else if (a[1][2] == a[2][2] && a[1][2] == 1 && a[0][2] == 0) {
+            changePicture(0,2);
+
+        }else if (a[0][2] == a[2][2] && a[0][2] == 1 && a[1][2] == 0) {
+            changePicture(1,2);
+
+        }else if (a[0][0] == a[1][1] && a[0][0] == 1 && a[2][2] == 0) {
+            changePicture(2,2);
+
+        }else if (a[1][1] == a[2][2] && a[1][1] == 1 && a[0][0] == 0) {
+            changePicture(0,0);
+
+        }else if (a[0][0] == a[2][2] && a[0][0] == 1 && a[1][1] == 0) {
+            changePicture(1,1);
+
+        }else if (a[0][2] == a[1][1] && a[0][2] == 1 && a[2][0] == 0) {
+            changePicture(2,0);
+
+        }else if (a[1][1] == a[2][0] && a[1][1] == 1 && a[0][2] == 0) {
+            changePicture(0,2);
+
+        }else if (a[0][2] == a[2][0] && a[0][2] == 1 && a[1][1] == 0) {
+            changePicture(1,1);
+
+        }else {
+            prevent();
+        }
+    }
+
+    public void prevent() {
+        if (a[0][0] == a[0][1] && a[0][0] == 2 && a[0][2] == 0) {
+            changePicture(0,2);
+
+        }else if (a[0][1] == a[0][2] && a[0][1] == 2 && a[0][0] == 0) {
+            changePicture(0,0);
+
+        }else if (a[0][0] == a[0][2] && a[0][0] == 2 && a[0][1] == 0) {
+            changePicture(0,1);
+
+        }else if (a[1][0] == a[1][1] && a[1][0] == 2 && a[1][2] == 0) {
+            changePicture(1,2);
+
+        }else if (a[1][1] == a[1][2] && a[1][1] == 2 && a[1][0] == 0) {
+            changePicture(1,0);
+
+        }else if (a[1][0] == a[1][2] && a[1][0] == 2 && a[1][1] == 0) {
+            changePicture(1,1);
+
+        }else if (a[2][0] == a[2][1] && a[2][0] == 2 && a[2][2] == 0) {
+            changePicture(2,2);
+
+        }else if (a[2][1] == a[2][2] && a[2][1] == 2 && a[2][0] == 0) {
+            changePicture(2,0);
+
+        }else if (a[2][0] == a[2][2] && a[2][0] == 2 && a[2][1] == 0) {
+            changePicture(2,1);
+
+        }else if (a[0][0] == a[1][0] && a[0][0] == 2 && a[2][0] == 0) {
+            changePicture(2,0);
+
+        }else if (a[1][0] == a[2][0] && a[1][0] == 2 && a[0][0] == 0) {
+            changePicture(0,0);
+
+        }else if (a[0][0] == a[2][0] && a[0][0] == 2 && a[1][0] == 0) {
+            changePicture(1,0);
+
+        }else if (a[0][1] == a[1][1] && a[0][1] == 2 && a[2][1] == 0) {
+            changePicture(2,1);
+
+        }else if (a[1][1] == a[2][1] && a[1][1] == 2 && a[0][1] == 0) {
+            changePicture(0,1);
+
+        }else if (a[0][1] == a[2][1] && a[0][1] == 2 && a[1][1] == 0) {
+            changePicture(1,1);
+
+        }else if (a[0][2] == a[1][2] && a[0][2] == 2 && a[2][2] == 0) {
+            changePicture(2,2);
+
+        }else if (a[1][2] == a[2][2] && a[1][2] == 2 && a[0][2] == 0) {
+            changePicture(0,2);
+
+        }else if (a[0][2] == a[2][2] && a[0][2] == 2 && a[1][2] == 0) {
+            changePicture(1,2);
+
+        }else if (a[0][0] == a[1][1] && a[0][0] == 2 && a[2][2] == 0) {
+            changePicture(2,2);
+
+        }else if (a[1][1] == a[2][2] && a[1][1] == 2 && a[0][0] == 0) {
+            changePicture(0,0);
+
+        }else if (a[0][0] == a[2][2] && a[0][0] == 2 && a[1][1] == 0) {
+            changePicture(1,1);
+
+        }else if (a[0][2] == a[1][1] && a[0][2] == 2 && a[2][0] == 0) {
+            changePicture(2,0);
+
+        }else if (a[1][1] == a[2][0] && a[1][1] == 2 && a[0][2] == 0) {
+            changePicture(0,2);
+
+        }else if (a[0][2] == a[2][0] && a[0][2] == 2 && a[1][1] == 0) {
+            changePicture(1,1);
+
+        }else {
+            specialMove();
+        }
+    }
+
+    public void specialMove() {
+        if (a[0][0] == 1 && a[1][1] == 2 && sum == 3) {
+            changePicture(2,2);
+
+        }else if (a[0][0] == 1 && a[2][1] == 2 && sum == 3) {
+            changePicture(0,2);
+
+        }else if (a[0][0] == 1 && a[1][2] == 2 && sum == 3) {
+            changePicture(2,0);
+
+        }else if (a[0][0] == 1 && a[2][2] == 2 && sum == 3) {
+            changePicture(2,0);
+
+        }else if (a[2][0] == 1 && a[1][0] == 2 && a[0][0] == 1 && a[2][2] == 2 && sum == 6) {
+            changePicture(0,2);
+
+        }else if (a[0][0] == 1 && (a[0][2] == 2 || a[2][0] == 2) && sum == 3) {
+            changePicture(2,2);
+
+        }else if (a[0][0] == 1 && a[0][1] == 2 && sum == 3) {
+            changePicture(2,0);
+
+        }else if (a[0][0] == 1 && a[0][1] == 2 && a[2][0] == 1 && a[1][0] == 2 && sum == 6) {
+            changePicture(1,1);
+
+        }else if (a[0][0] == 1 && a[1][0] == 2 && sum == 3) {
+            changePicture(0,2);
+
+        }else if (a[0][0] == 1 && a[1][0] == 2 && a[0][2] == 1 && a[0][1] == 2 && sum == 6) {
+            changePicture(1,1);
+
+        } else {
+            int position = new Random().nextInt(9);
+            while(board[position/3][position%3] != null){
+                position +=1;
+                position %=9;
+            }
+            changePicture(position / 3,position % 3);
+        }
+    }
 }
