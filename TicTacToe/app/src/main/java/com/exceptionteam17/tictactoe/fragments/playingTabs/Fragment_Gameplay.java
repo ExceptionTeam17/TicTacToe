@@ -98,9 +98,9 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        play(0,0);
         switch (v.getId()) {
             case R.id.single_box1:
+                play(0,0);
                 break;
             case R.id.single_box2:
                 play(0,1);
