@@ -5,10 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -26,13 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
-import com.exceptionteam17.tictactoe.activities.MainActivity;
 import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
 import com.exceptionteam17.tictactoe.model.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class Fragment_Multiplayer extends Fragment{
 
@@ -47,7 +42,9 @@ public class Fragment_Multiplayer extends Fragment{
     private static String[] PERMISSIONS= {
             Manifest.permission.BLUETOOTH,
             Manifest.permission.BLUETOOTH_ADMIN,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.CHANGE_WIFI_STATE
             //Manifest.permission.BLUETOOTH_PRIVILEGED api 19+
     };
 
@@ -62,8 +59,7 @@ public class Fragment_Multiplayer extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_multiplayer, container, false);
         initialize();
-        verifyPermissions(((Activity)view.getContext()));
-        startGame();
+        clickListeners();
         return view;
     }
 
@@ -107,13 +103,15 @@ public class Fragment_Multiplayer extends Fragment{
         }
     }
 
-    private void startGame() {
+    private void clickListeners() {
         startMulti2Dev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startStopBluetooth(); //turn on bluetooth
-                enableBluetoothDiscoverable(); //set discoverable bluetooth
-                discoverDevices(); //start discovering devices
+                verifyPermissions(((Activity)view.getContext()));
+                loadFragment(new FragmentConnectToOponent());
+//                startStopBluetooth(); //turn on bluetooth
+//                enableBluetoothDiscoverable(); //set discoverable bluetooth
+//                discoverDevices(); //start discovering devices
             }
         });
 
@@ -154,29 +152,29 @@ public class Fragment_Multiplayer extends Fragment{
         });
     }
 
-    private void startStopBluetooth(){
-        if (bluetoothAdapter == null) {
-            Toast.makeText(view.getContext(), "NO BLUETOOTH", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!bluetoothAdapter.isEnabled()) {
-            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivity(turnOn);
-        }
-    }
-
-    private void enableBluetoothDiscoverable() {
-        Intent enableDiscoverable = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        enableDiscoverable.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
-        startActivity(enableDiscoverable);
-    }
-
-    private void discoverDevices() {
-        if (!bluetoothAdapter.isDiscovering()) {
-            bluetoothAdapter.startDiscovery();
-            Log.e("Tuka", "sum");
-        }
-    }
+//    private void startStopBluetooth(){
+//        if (bluetoothAdapter == null) {
+//            Toast.makeText(view.getContext(), "NO BLUETOOTH", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (!bluetoothAdapter.isEnabled()) {
+//            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivity(turnOn);
+//        }
+//    }
+//
+//    private void enableBluetoothDiscoverable() {
+//        Intent enableDiscoverable = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+//        enableDiscoverable.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
+//        startActivity(enableDiscoverable);
+//    }
+//
+//    private void discoverDevices() {
+//        if (!bluetoothAdapter.isDiscovering()) {
+//            bluetoothAdapter.startDiscovery();
+//            Log.e("Tuka", "sum");
+//        }
+//    }
 
     private void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
