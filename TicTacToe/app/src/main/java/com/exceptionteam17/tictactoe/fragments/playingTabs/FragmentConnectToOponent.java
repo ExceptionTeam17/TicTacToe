@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.exceptionteam17.tictactoe.R;
+import com.exceptionteam17.tictactoe.model.utils.Preferences;
+import com.google.android.gms.nearby.connection.ConnectionsClient;
 
 public class FragmentConnectToOponent extends Fragment {
 
@@ -25,11 +27,16 @@ public class FragmentConnectToOponent extends Fragment {
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.CHANGE_WIFI_STATE
     };
+    private ConnectionsClient connectionsClient;
+
+    // Our randomly generated name
+    private String playerName;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_discover, container, false);
+        playerName = Preferences.getStringFromPreferences(view.getContext(),"user");
         verifyPermissions(((Activity)view.getContext()));
         return view;
     }
