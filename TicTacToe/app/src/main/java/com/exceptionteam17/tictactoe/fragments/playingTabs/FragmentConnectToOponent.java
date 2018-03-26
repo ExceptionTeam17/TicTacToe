@@ -34,6 +34,8 @@ import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
 
+import es.dmoral.toasty.Toasty;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class FragmentConnectToOponent extends Fragment {
@@ -134,7 +136,7 @@ public class FragmentConnectToOponent extends Fragment {
 
         for (int grantResult : grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(getContext(), "need this", Toast.LENGTH_LONG).show(); //TODO change to toasty
+                Toasty.warning(view.getContext().getApplicationContext(), "Must give permission to play", Toast.LENGTH_SHORT, true).show();
                 verifyPermissions(((Activity)view.getContext()));
                 return;
             }
@@ -226,6 +228,12 @@ public class FragmentConnectToOponent extends Fragment {
         // Note: Advertising may fail. To keep this demo simple, we don't handle failures.
         connectionsClient.startAdvertising(
                 playerName, "com.exceptionteam17.tictactoe", connectionLifecycleCallback, new AdvertisingOptions.Builder().setStrategy(STRATEGY).build());
+    }
+
+    @Override
+    public void onStop() {
+        connectionsClient.stopAllEndpoints();
+        super.onStop();
     }
 
     /** Sends the user's selection of rock, paper, or scissors to the opponent. */
