@@ -267,7 +267,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
         switch (checkForVictory()) {
             case GAME_OVER:
                 isGameOver = true;
-                showAlert("DRAW", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                showAlert("DRAW", "New game?", R.mipmap.ic_popup, "PLAY", "NO");
                 db.addUserDraw(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             case NO_WINNER:
@@ -287,12 +287,12 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 break;
             case WINNER_PHONE:
                 isGameOver = true;
-                showAlert("YOU LOST", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                showAlert("YOU LOST", "New game?", R.mipmap.ic_popup, "PLAY", "NO");
                 db.addUserLose(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             case WINNER_PLAYER:
                 isGameOver = true;
-                showAlert("YOU WON!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                showAlert("YOU WON!!!", "New game?", R.mipmap.ic_popup, "PLAY", "NO");
                 db.addUserWin(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             default:

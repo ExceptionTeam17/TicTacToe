@@ -246,18 +246,18 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
     private void checkForEndGame() {
         switch (checkForVictory()) {
             case GAME_OVER:
-                showAlert("DRAW", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                showAlert("DRAW", "New game?", R.drawable.ic_popup_foreground, "PLAY", "NO");
                 db.addUserDrawMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             case NO_WINNER:
                 turn.setText((isPlayerTurn? username : secondPlauyerName) + ":");
                 break;
             case WINNER_PHONE:
-                showAlert("Player " + secondPlauyerName + " WIN!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                showAlert("Player " + secondPlauyerName + " WIN!!!", "New game?", R.drawable.ic_popup_foreground, "PLAY", "NO");
                 db.addUserLoseMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
             case WINNER_PLAYER:
-                showAlert("Player " + username + " WIN!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                showAlert("Player " + username + " WIN!!!", "New game?", R.drawable.ic_popup_foreground, "PLAY", "NO");
                 db.addUserWinMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 break;
         }
