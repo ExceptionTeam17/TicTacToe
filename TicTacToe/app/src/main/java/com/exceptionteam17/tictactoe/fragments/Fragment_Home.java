@@ -1,5 +1,6 @@
 package com.exceptionteam17.tictactoe.fragments;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@ public class Fragment_Home extends Fragment {
     private void loadTabView() {
         tabLayout.addTab(tabLayout.newTab().setText("Singleplayer"));
         tabLayout.addTab(tabLayout.newTab().setText("Multiplayer"));
+        tabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
