@@ -31,7 +31,7 @@
         </activity>
         <activity android:name=".activities.MainActivity"/>
         <activity android:name=".activities.OnePlayerDificult"/>
-
+        <!--TODO remove receivers-->
         <receiver
             android:name=".model.BluetoothStateChangeReceiver"
             android:enabled="true">
@@ -54,16 +54,5 @@
 
             </intent-filter>
         </receiver>
-
-
-        <receiver
-            android:name=".model.DiscoverDevicesReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="BluetoothDevice.ACTION_FOUND"/>
-            </intent-filter>
-        </receiver>
     </application>
-
-
 </manifest>

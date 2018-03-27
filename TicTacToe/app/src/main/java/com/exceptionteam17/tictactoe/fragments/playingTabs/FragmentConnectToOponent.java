@@ -10,12 +10,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.media.MediaBrowserCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -56,13 +54,14 @@ public class FragmentConnectToOponent extends Fragment {
     };
     private ConnectionsClient connectionsClient;
     private Button findOpponentButton;
-    private Button disconnectButton, go;
+    private Button disconnectButton;
     private String playerName;
     private String opponentEndpointId;
     private String opponentName;
-    private TextView satatus, test;
+    private TextView satatus;
     private final Strategy STRATEGY = Strategy.P2P_STAR;
     private DiscoveryOptions discoveryOptions;
+    private AdvertisingOptions advertisingOptions;
 
     @Nullable
     @Override
@@ -80,10 +79,8 @@ public class FragmentConnectToOponent extends Fragment {
 
     private void initialize(){
         connectionsClient = Nearby.getConnectionsClient(view.getContext());
-        test = view.findViewById(R.id.test);
         playerName = Preferences.getStringFromPreferences(view.getContext(),"user");
         findOpponentButton = view.findViewById(R.id.discover_find_opponent_btn);
-        go = view.findViewById(R.id.test_btn);
         findOpponentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,13 +96,14 @@ public class FragmentConnectToOponent extends Fragment {
         });
         satatus = view.findViewById(R.id.discover_text_status);
         discoveryOptions = new DiscoveryOptions.Builder().setStrategy(STRATEGY).build();
-        go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                connectionsClient.sendPayload(
-                        opponentEndpointId, Payload.fromBytes((" " + (new Random().nextInt())).getBytes(UTF_8)));
-            }
-        });
+        advertisingOptions = new AdvertisingOptions.Builder().setStrategy(STRATEGY).build();
+//        go.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                connectionsClient.sendPayload(
+//                        opponentEndpointId, Payload.fromBytes((" " + (new Random().nextInt())).getBytes(UTF_8)));
+//            }
+//        });
     }
 
     public void findOpponent() {
@@ -174,7 +172,7 @@ public class FragmentConnectToOponent extends Fragment {
                 @Override
                 public void onPayloadReceived(String endpointId, Payload payload) {
                     String opponentMove = new String(payload.asBytes(), UTF_8);
-                    test.setText(opponentMove);
+
                 }
 
                 @Override
@@ -222,6 +220,8 @@ public class FragmentConnectToOponent extends Fragment {
                         //setButtonState(true);
                     } else {
                         Log.i("bla bla", "onConnectionResult: connection failed");
+                        disconnect();
+                        findOpponent();
                     }
                 }
 
@@ -243,7 +243,7 @@ public class FragmentConnectToOponent extends Fragment {
     private void startAdvertising() {
         // Note: Advertising may fail. To keep this demo simple, we don't handle failures.
         connectionsClient.startAdvertising(
-                playerName, "com.exceptionteam17.tictactoe", connectionLifecycleCallback, new AdvertisingOptions.Builder().setStrategy(STRATEGY).build());
+                playerName, "com.exceptionteam17.tictactoe", connectionLifecycleCallback, advertisingOptions);
     }
 
     @Override
