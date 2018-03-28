@@ -12,8 +12,6 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.exceptionteam17.tictactoe.activities.OnePlayerDificult;
-
 public class CanvasView1D extends View { //you have to create a new java file and then insert the same
     // file in the xml of the page in which you want the canvas
     private Paint paint = new Paint();
@@ -99,7 +97,7 @@ public class CanvasView1D extends View { //you have to create a new java file an
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (oncedrawen || oncewin) {
-                OnePlayerDificult.act_1d.finish();
+                //OnePlayerDificult.act_1d.finish();
             }
             float touchX = event.getX();
             float touchY = event.getY();
@@ -463,7 +461,7 @@ public class CanvasView1D extends View { //you have to create a new java file an
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE: {
-                        OnePlayerDificult.act_1d.finish();
+                        //OnePlayerDificult.act_1d.finish();
                     }
                     case DialogInterface.BUTTON_NEGATIVE:
                         //No button clicked

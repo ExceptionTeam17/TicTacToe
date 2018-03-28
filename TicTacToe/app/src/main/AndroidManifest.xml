@@ -31,7 +31,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity"/>
-        <activity android:name=".activities.OnePlayerDificult"/>
         <!--TODO remove receivers-->
 
         <receiver
