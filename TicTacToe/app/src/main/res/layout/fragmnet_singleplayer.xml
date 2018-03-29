@@ -40,6 +40,7 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:text="easy"
             android:textColor="@color/white"
+            android:buttonTint="@color/white"
             android:checked="true"
             android:layout_margin="10dp"/>
         <RadioButton
@@ -48,6 +49,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:text="hard"
+            android:buttonTint="@color/white"
             android:textColor="@color/white"
             android:layout_margin="10dp"/>
 
@@ -58,10 +60,15 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"/>
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#104674">
+        android:background="#474943">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,6 +79,8 @@
                 android:id="@+id/toolbar_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:text="username"
                 android:gravity="center"
                 />
@@ -86,6 +95,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:text="win"/>
 
                 <TextView
@@ -93,6 +103,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:text="draw"/>
 
                 <TextView
@@ -100,6 +111,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:text="lost"/>
             </LinearLayout>
         </LinearLayout>
