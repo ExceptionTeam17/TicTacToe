@@ -70,8 +70,8 @@ public class Fragment_Singleplayer extends Fragment{
 
 
     public void setSingle(){
-        win.setText("Wins: " + db.getUserWins(username));
-        draw.setText("Draws: " + db.getUserDraws(username));
-        lost.setText("Loses: " + db.getUserLoses(username));
+        win.setText(getString(R.string.Wins, db.getUserWins(username)));
+        draw.setText(getString(R.string.Draws, db.getUserDraws(username)));
+        lost.setText(getString(R.string.Loses, db.getUserLoses(username)));
     }
 }

@@ -86,9 +86,9 @@ public class Fragment_Multiplayer extends Fragment{
     }
 
     public void setMulti(){
-        win.setText("Wins: " + db.getUserWinsMulti(username));
-        draw.setText("Draws: " + db.getUserDrawsMulti(username));
-        lost.setText("Loses: " + db.getUserLosesMulti(username));
+        win.setText(getString(R.string.Wins, db.getUserWinsMulti(username)));
+        draw.setText(getString(R.string.Draws, db.getUserDrawsMulti(username)));
+        lost.setText(getString(R.string.Loses, db.getUserLosesMulti(username)));
     }
 
     public static void verifyPermissions(Activity activity) {
