@@ -17,6 +17,7 @@ import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
 import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
+import com.exceptionteam17.tictactoe.model.utils.Utils;
 
 import java.util.Random;
 
@@ -45,7 +46,6 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
         view = inflater.inflate(R.layout.fragment_gameplay, container, false);
         initialize();
         setImagesClickListeners();
-
         if(!isPlayerTurn){
             if(isSimple) {
                 Random r = new Random();
@@ -54,8 +54,15 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 changePicture(0,0);
             }
         }
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(this.getActivity() != null) {
+            Utils.hideKeyboard(this.getActivity());
+        }
     }
 
     private void initialize() {

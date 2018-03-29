@@ -45,14 +45,9 @@ public class Fragment_Multiplayer extends Fragment{
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.CHANGE_WIFI_STATE
-            //Manifest.permission.BLUETOOTH_PRIVILEGED api 19+
     };
+    private Dialog dialog;
 
-    public static void addDevice(BluetoothDevice device) {
-        if (device != null) {
-            devices.add(device);
-        }
-    }
 
     @Nullable
     @Override
@@ -61,6 +56,14 @@ public class Fragment_Multiplayer extends Fragment{
         initialize();
         clickListeners();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(this.getActivity() != null) {
+            Utils.hideKeyboard(this.getActivity());
+        }
     }
 
     private void initialize() {
@@ -75,7 +78,10 @@ public class Fragment_Multiplayer extends Fragment{
         usernameView.setText(username);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         devices = new ArrayList<>();
-
+        dialog = new Dialog(view.getContext(), R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_second_username);
         setMulti();
     }
 
@@ -116,12 +122,8 @@ public class Fragment_Multiplayer extends Fragment{
         });
 
         startMulti1Dev.setOnClickListener(new View.OnClickListener() {
-            Dialog dialog = new Dialog(getContext(), R.style.Theme_Dialog);
             @Override
             public void onClick(View v) {
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setCancelable(false);
-                dialog.setContentView(R.layout.dialog_second_username);
                 ((Button)dialog.findViewById(R.id.btn_2user_cancel)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -142,7 +144,9 @@ public class Fragment_Multiplayer extends Fragment{
                         bundle.putString("secondPlayer", secondUser);
                         fr.setArguments(bundle);
                         dialog.dismiss();
-                        Utils.hideKeyboard(getActivity());
+                        if(getActivity() != null) {
+                            Utils.hideKeyboard(getActivity());
+                        }
                         loadFragment(fr);
                     }
                 });

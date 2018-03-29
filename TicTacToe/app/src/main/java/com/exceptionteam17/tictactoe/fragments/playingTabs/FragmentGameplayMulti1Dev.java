@@ -53,6 +53,14 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(this.getActivity() != null) {
+            Utils.hideKeyboard(this.getActivity());
+        }
+    }
+
     private void initialize() {
         db = DatabaseHelper.getInstance(this.getContext());
         isPlayerTurn = new Random().nextBoolean();

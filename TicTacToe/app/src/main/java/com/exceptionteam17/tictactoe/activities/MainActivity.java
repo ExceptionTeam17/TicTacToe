@@ -9,6 +9,7 @@ import android.view.WindowManager;
 
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
+import com.exceptionteam17.tictactoe.model.utils.Utils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
+        Utils.hideKeyboard(this);
     }
 
     private void loadFragment(Fragment fragment) {

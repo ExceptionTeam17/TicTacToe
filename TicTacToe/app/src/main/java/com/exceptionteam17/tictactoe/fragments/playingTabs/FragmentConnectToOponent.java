@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
+import com.exceptionteam17.tictactoe.model.utils.Utils;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
@@ -91,6 +92,14 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
         setImagesClickListeners();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(this.getActivity() != null) {
+            Utils.hideKeyboard(this.getActivity());
+        }
     }
 
     private void initialize(){
