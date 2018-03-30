@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;

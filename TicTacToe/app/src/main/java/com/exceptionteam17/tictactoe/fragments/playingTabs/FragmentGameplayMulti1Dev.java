@@ -25,8 +25,6 @@ import libs.mjn.prettydialog.PrettyDialogCallback;
 
 public final class FragmentGameplayMulti1Dev extends Fragment implements View.OnClickListener{
 
-    //TODO add different layouts for different resolutions
-
     private final static String WINNER_PHONE = "SYSTEM_PHONE";
     private final static String WINNER_PLAYER = "SYSTEM_PLAYER";
     private final static String GAME_OVER = "SYSTEM_GAME_OVER";
@@ -160,7 +158,9 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
         Bundle bundle = new Bundle();
         bundle.putString("secondPlayer", secondPlauyerName);
         fr.setArguments(bundle);
-        Utils.hideKeyboard(getActivity());
+        if(getActivity() != null) {
+            Utils.hideKeyboard(getActivity());
+        }
         loadFragment(fr);
     }
 
@@ -258,19 +258,22 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
     private void checkForEndGame() {
         switch (checkForVictory()) {
             case GAME_OVER:
-                showAlert("DRAW", "New game?", R.drawable.ic_popup_foreground, "PLAY", "NO");
+                if(this.getContext() != null)
                 db.addUserDrawMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
+                showAlert("DRAW", "New game?", R.drawable.ic_popup_foreground, "PLAY", "NO");
                 break;
             case NO_WINNER:
                 turn.setText((isPlayerTurn? username : secondPlauyerName) + ":");
                 break;
             case WINNER_PHONE:
-                showAlert("Player " + secondPlauyerName + " WIN!!!", "New game?", R.drawable.ic_popup_foreground, "PLAY", "NO");
+                if(this.getContext() != null)
                 db.addUserLoseMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
+                showAlert("Player " + secondPlauyerName + " WIN!!!", "New game?", R.drawable.ic_popup_foreground, "PLAY", "NO");
                 break;
             case WINNER_PLAYER:
-                showAlert("Player " + username + " WIN!!!", "New game?", R.drawable.ic_popup_foreground, "PLAY", "NO");
+                if(this.getContext() != null)
                 db.addUserWinMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
+                showAlert("Player " + username + " WIN!!!", "New game?", R.drawable.ic_popup_foreground, "PLAY", "NO");
                 break;
         }
     }
@@ -285,7 +288,7 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
                 .addButton(
                         posBtnText,     // button text
                         R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_green,  // button background color //TODO change color
+                        R.color.btnBackground,  // button background color
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {
@@ -298,7 +301,7 @@ public final class FragmentGameplayMulti1Dev extends Fragment implements View.On
                 .addButton(
                         negativeBtnText,     // button text
                         R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_red,  // button background color
+                        R.color.softRed,  // button background color
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {

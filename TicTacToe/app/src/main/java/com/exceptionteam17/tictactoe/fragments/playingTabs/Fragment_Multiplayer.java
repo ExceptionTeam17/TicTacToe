@@ -115,9 +115,6 @@ public class Fragment_Multiplayer extends Fragment{
             public void onClick(View v) {
                 verifyPermissions(((Activity)view.getContext()));
                 loadFragment(new FragmentConnectToOponent());
-//                startStopBluetooth(); //turn on bluetooth
-//                enableBluetoothDiscoverable(); //set discoverable bluetooth
-//                discoverDevices(); //start discovering devices
             }
         });
 
@@ -155,30 +152,6 @@ public class Fragment_Multiplayer extends Fragment{
             }
         });
     }
-
-//    private void startStopBluetooth(){
-//        if (bluetoothAdapter == null) {
-//            Toast.makeText(view.getContext(), "NO BLUETOOTH", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        if (!bluetoothAdapter.isEnabled()) {
-//            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivity(turnOn);
-//        }
-//    }
-//
-//    private void enableBluetoothDiscoverable() {
-//        Intent enableDiscoverable = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-//        enableDiscoverable.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
-//        startActivity(enableDiscoverable);
-//    }
-//
-//    private void discoverDevices() {
-//        if (!bluetoothAdapter.isDiscovering()) {
-//            bluetoothAdapter.startDiscovery();
-//            Log.e("Tuka", "sum");
-//        }
-//    }
 
     private void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();

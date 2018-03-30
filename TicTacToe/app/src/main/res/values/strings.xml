@@ -7,4 +7,19 @@
     <string name="searchng">Searching...</string>
     <string name="waiting">Waiting for opponent</string>
     <string name="disconnected">DISCONNECTED</string>
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
+    <string name="play">play</string>
+    <string name="second_player_name">Second player name</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">ok</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="create_game">Create game</string>
+    <string name="connect_to_game">Connect to game</string>
+    <string name="back_to_main_screen">Back to main screen</string>
+    <string name="play_on_one_device">play on one device</string>
+    <string name="play_on_two_devices">play on two devices</string>
+    <string name="single_player">Single Player</string>
+    <string name="multi_player">Multi Player</string>
+    <string name="connecting">Connecting</string>
 </resources>

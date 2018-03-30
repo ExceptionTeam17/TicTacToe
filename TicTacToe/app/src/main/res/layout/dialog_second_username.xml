@@ -16,7 +16,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:text="Second player name"/>
+        android:text="@string/second_player_name"/>
 
     <EditText
         android:id="@+id/second_username_edit"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/white"
-            android:text="cancel"
+            android:text="@string/cancel"
             android:layout_margin="10dp"
             android:background="@drawable/btn_red_background"/>
 
@@ -48,7 +48,7 @@
             android:layout_weight="1"
             android:layout_margin="10dp"
             android:textColor="@color/white"
-            android:text="ok"
+            android:text="@string/ok"
             android:background="@drawable/btn_green_background"/>
 
 

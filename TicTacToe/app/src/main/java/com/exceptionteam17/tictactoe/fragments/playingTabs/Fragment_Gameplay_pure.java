@@ -228,7 +228,7 @@ public final class Fragment_Gameplay_pure extends Fragment implements View.OnCli
                 showAlert("YOU LOST", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
             case WINNER_PLAYER:
-                showAlert("YOU WON!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
+                showAlert("YOU WIN!!!", "New game?", R.drawable.ic_launcher_foreground, "PLAY", "NO");
                 break;
         }
     }
@@ -243,7 +243,7 @@ public final class Fragment_Gameplay_pure extends Fragment implements View.OnCli
                 .addButton(
                         posBtnText,     // button text
                         R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_green,  // button background color //TODO change color
+                        R.color.btnBackground,
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {
@@ -256,7 +256,7 @@ public final class Fragment_Gameplay_pure extends Fragment implements View.OnCli
                 .addButton(
                         negativeBtnText,     // button text
                         R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_red,  // button background color
+                        R.color.softRed,  // button background color
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {

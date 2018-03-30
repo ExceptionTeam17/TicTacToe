@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity{
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         loadFragment(new Fragment_Home());
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713"); //TODO test id
+        MobileAds.initialize(this, "ca-app-pub-3532736192097860~3422811596");
 
     }
 
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onPause() {
         mInterstitialAd = new InterstitialAd(this.getApplicationContext());
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); //TODO test id
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("61D5A593BF290904C3894DE2CF09847D").build();  //TODO test device
+        mInterstitialAd.setAdUnitId("ca-app-pub-3532736192097860/8439813485");
+        AdRequest adRequest = new AdRequest.Builder().build();
         mInterstitialAd.loadAd(adRequest);
         mInterstitialAd.setAdListener(new AdListener() {
             public void onAdLoaded() {

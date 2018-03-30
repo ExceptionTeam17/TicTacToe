@@ -17,7 +17,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:background="@drawable/btn_green_background"
-        android:text="play"
+        android:text="@string/play"
         android:paddingEnd="10dp"
         android:paddingLeft="10dp"
         android:paddingStart="10dp"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:text="easy"
+            android:text="@string/easy"
             android:textColor="@color/white"
             android:buttonTint="@color/white"
             android:checked="true"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:text="hard"
+            android:text="@string/hard"
             android:buttonTint="@color/white"
             android:textColor="@color/white"
             android:layout_margin="10dp"/>
@@ -68,7 +68,7 @@
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#474943">
+        android:background="#8cc1ec">
 
         <LinearLayout
             android:layout_width="match_parent"

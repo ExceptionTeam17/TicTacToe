@@ -35,8 +35,8 @@ public class Fragment_Home extends Fragment {
     }
 
     private void loadTabView() {
-        tabLayout.addTab(tabLayout.newTab().setText("Singleplayer"));
-        tabLayout.addTab(tabLayout.newTab().setText("Multiplayer"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.single_player));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.multi_player));
         tabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);

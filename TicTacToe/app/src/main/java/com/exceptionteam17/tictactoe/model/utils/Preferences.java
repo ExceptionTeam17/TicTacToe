@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 
-public abstract class Preferences {
+public final class Preferences {
+
+    private Preferences(){}
 
     public static final String EMPTY = "errNO";
 

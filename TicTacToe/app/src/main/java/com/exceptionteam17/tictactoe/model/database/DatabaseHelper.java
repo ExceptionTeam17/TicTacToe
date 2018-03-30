@@ -131,7 +131,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return getUserStat(username, LOSES_MULTI);
     }
 
-    /// this is not working properly, must fix
     private void addUserStat(String username, int coll){
         SQLiteDatabase db = this.getWritableDatabase();
         String coll_name = "";

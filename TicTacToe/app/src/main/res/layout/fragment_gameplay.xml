@@ -169,7 +169,7 @@
         android:paddingRight="10dp"
         android:paddingEnd="10dp"
         android:layout_margin="20dp"
-        android:text="back to main screen"
+        android:text="@string/back_to_main_screen"
         android:textColor="@color/white"
         android:background="@drawable/btn_red_background" />
 </LinearLayout>

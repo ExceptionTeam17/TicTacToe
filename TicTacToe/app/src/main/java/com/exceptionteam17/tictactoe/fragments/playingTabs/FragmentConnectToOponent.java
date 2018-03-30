@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.exceptionteam17.tictactoe.R;
 import com.exceptionteam17.tictactoe.fragments.Fragment_Home;
+import com.exceptionteam17.tictactoe.model.database.DatabaseHelper;
 import com.exceptionteam17.tictactoe.model.utils.Preferences;
 import com.exceptionteam17.tictactoe.model.utils.Utils;
 import com.google.android.gms.nearby.Nearby;
@@ -67,8 +68,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
     private DiscoveryOptions discoveryOptions;
     private AdvertisingOptions advertisingOptions;
     private PrettyDialog prettyDialog;
-    ///////////////////////////
-
+    private DatabaseHelper db;
     private final static String WINNER_PHONE = "SYSTEM_PHONE";
     private final static String WINNER_PLAYER = "SYSTEM_PLAYER";
     private final static String GAME_OVER = "SYSTEM_GAME_OVER";
@@ -166,6 +166,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
         openGameButton.setVisibility(View.VISIBLE);
         textGameplay = view.findViewById(R.id.text_gameplay);
         textGameplay.setText("");
+        db = DatabaseHelper.getInstance(this.getContext());
     }
 
     public void findOpponent() {
@@ -277,7 +278,6 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
 
                 @Override
                 public void onPayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {
-                    Log.e("blaalalala", "kakvo da pravq tuk?!" + update);
 //                    if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS && myChoice != null && opponentChoice != null) {
 //                        finishRound();
 //                    }
@@ -289,14 +289,14 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
             new EndpointDiscoveryCallback() {
                 @Override
                 public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
-                    Log.i("bla bla", "onEndpointFound: endpoint found, connecting");
+//                    Log.i("bla bla", "onEndpointFound: endpoint found, connecting");
                     connectionsClient.requestConnection(playerName, endpointId, connectionLifecycleCallback);
-                    satatus.setText("Connecting");
+                    satatus.setText(R.string.connecting);
                 }
 
                 @Override
                 public void onEndpointLost(String endpointId) {
-                    satatus.setText("searching");
+                    satatus.setText(R.string.searchng);
                     disconnect();
                     findOpponent();
                 }
@@ -308,7 +308,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
 
                 @Override
                 public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
-                    Log.i("bla bla", "onConnectionInitiated: accepting connection");
+//                    Log.i("bla bla", "onConnectionInitiated: accepting connection");
                     connectionsClient.acceptConnection(endpointId, payloadCallback);
                     opponentName = connectionInfo.getEndpointName();
                 }
@@ -316,14 +316,14 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                 @Override
                 public void onConnectionResult(String endpointId, ConnectionResolution result) {
                     if (result.getStatus().isSuccess()) {
-                        Log.i("bla bla", "onConnectionResult: connection successful");
+//                        Log.i("bla bla", "onConnectionResult: connection successful");
                         enableBoard();
                         connectionsClient.stopDiscovery();
                         connectionsClient.stopAdvertising();
 
                         opponentEndpointId = endpointId;
 
-                        satatus.setText("connected to: " + opponentName);
+                        satatus.setText("Connected to: " + opponentName);
                         disconnectButton.setVisibility(View.VISIBLE);
                         findOpponentButton.setVisibility(View.GONE);
                         openGameButton.setVisibility(View.GONE);
@@ -586,6 +586,8 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
     private void checkForEndGame() {
         switch (checkForVictory()) {
             case GAME_OVER:
+                if(this.getContext() != null)
+                    db.addUserDrawMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 isGameEnd = true;
                 showAlert("DRAW", "New game?", R.mipmap.ic_popup_round, "PLAY", "NO");
                 break;
@@ -593,12 +595,16 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                 isGameEnd = false;
                 break;
             case WINNER_PHONE:
+                if(this.getContext() != null)
+                    db.addUserLoseMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 isGameEnd = true;
                 showAlert("YOU LOST", "New game?", R.mipmap.ic_popup_round, "PLAY", "NO");
                 break;
             case WINNER_PLAYER:
+                if(this.getContext() != null)
+                    db.addUserWinMulti(Preferences.getStringFromPreferences(this.getContext(), "user"));
                 isGameEnd = true;
-                showAlert("YOU WON!!!", "New game?", R.mipmap.ic_popup_round, "PLAY", "NO");
+                showAlert("YOU WIN!!!", "New game?", R.mipmap.ic_popup_round, "PLAY", "NO");
                 break;
         }
     }
@@ -613,7 +619,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                 .addButton(
                         posBtnText,     // button text
                         R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_green,  // button background color //TODO change color
+                        R.color.btnBackground,  // button background color
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {
@@ -635,7 +641,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                 .addButton(
                         negativeBtnText,     // button text
                         R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_red,  // button background color
+                        R.color.softRed,  // button background color
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {

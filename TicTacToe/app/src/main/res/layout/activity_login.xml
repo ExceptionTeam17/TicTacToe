@@ -31,7 +31,7 @@
             android:layout_marginTop="10dp"
             android:textColor="#ffffff"
             android:gravity="center"
-            android:hint="USERNAME"
+            android:hint="Username"
             android:maxLength="70"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>

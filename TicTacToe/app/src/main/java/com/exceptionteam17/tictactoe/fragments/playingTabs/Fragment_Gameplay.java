@@ -317,7 +317,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 .addButton(
                         posBtnText,     // button text
                         R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_green,  // button background color //TODO change color
+                        R.color.btnBackground,  // button background color
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {
@@ -334,7 +334,7 @@ public final class Fragment_Gameplay extends Fragment implements View.OnClickLis
                 .addButton(
                         negativeBtnText,     // button text
                         R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_red,  // button background color
+                        R.color.softRed,  // button background color
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {
