@@ -73,14 +73,14 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
     private final static String WINNER_PLAYER = "SYSTEM_PLAYER";
     private final static String GAME_OVER = "SYSTEM_GAME_OVER";
     private final static String NO_WINNER = "SYSTEM_NO_WINNER";
-    private boolean isPlayerTurn, isCreator;
+    private boolean isPlayerTurn, isCreator, isGameEnd;
     private ImageView box1, box2, box3, box4, box5, box6, box7, box8, box9;
     private ImageView[][] field;
     private Boolean [][] board;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_discover, container, false);
         if(getActivity() != null && getActivity().getWindow() != null) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -104,14 +104,17 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
 
     private void initialize(){
         isCreator = false;
+        isGameEnd = false;
         connectionsClient = Nearby.getConnectionsClient(view.getContext());
         playerName = Preferences.getStringFromPreferences(view.getContext(),"user");
+        opponentName = "";
         findOpponentButton = view.findViewById(R.id.discover_find_opponent_btn);
         findOpponentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isCreator = false;
                 isPlayerTurn = false;
+                resetGame();
                 findOpponent();
             }
         });
@@ -121,6 +124,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
             public void onClick(View v) {
                 isCreator = true;
                 isPlayerTurn = true;
+                resetGame();
                 openGame();
             }
         });
@@ -128,21 +132,14 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
         disconnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                resetGame();
                 disconnect();
             }
         });
         satatus = view.findViewById(R.id.discover_text_status);
         discoveryOptions = new DiscoveryOptions.Builder().setStrategy(STRATEGY).build();
         advertisingOptions = new AdvertisingOptions.Builder().setStrategy(STRATEGY).build();
-//        go.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                connectionsClient.sendPayload(
-//                        opponentEndpointId, Payload.fromBytes((" " + (new Random().nextInt())).getBytes(UTF_8)));
-//            }
-//        });
 
-        ////////////////////////////////////////////////////////
         isPlayerTurn = true;
         box1 = view.findViewById(R.id.single_box1);
         box2 = view.findViewById(R.id.single_box2);
@@ -173,16 +170,25 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
 
     public void findOpponent() {
 //        startAdvertising();
+        isCreator = false;
         startDiscovery();
-        satatus.setText("Searching");
+        satatus.setText(R.string.searchng);
         disconnectButton.setVisibility(View.VISIBLE);
         findOpponentButton.setVisibility(View.GONE);
         openGameButton.setVisibility(View.GONE);
+        disableBoard();
+        isPlayerTurn = false;
     }
 
     public void openGame(){
         startAdvertising();
-        satatus.setText("Waiting for opponent");
+        isCreator = true;
+        satatus.setText(R.string.waiting);
+        disconnectButton.setVisibility(View.VISIBLE);
+        findOpponentButton.setVisibility(View.GONE);
+        openGameButton.setVisibility(View.GONE);
+        disableBoard();
+        isPlayerTurn = true;
     }
 
     public void disconnect() {
@@ -190,7 +196,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
             connectionsClient.disconnectFromEndpoint(opponentEndpointId);
             opponentEndpointId = null;
         }
-        satatus.setText("disconnected");
+        satatus.setText(R.string.disconnected);
         disconnectButton.setVisibility(View.GONE);
         findOpponentButton.setVisibility(View.VISIBLE);
         openGameButton.setVisibility(View.VISIBLE);
@@ -240,32 +246,32 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
         ft.commit();
     }
 
-
-    ///////////////////////////////////
-
-
     // Callbacks for receiving payloads
     private final PayloadCallback payloadCallback =
             new PayloadCallback() {
                 @Override
                 public void onPayloadReceived(String endpointId, Payload payload) {
                     String opponentMove = new String(payload.asBytes(), UTF_8);
+
                     if(opponentMove.equalsIgnoreCase("NEW")){
                         resetGame();
-                        //isPlayerTurn = false;
-                        textGameplay.setText(opponentName);
+
+                        textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                         if(prettyDialog != null && prettyDialog.isShowing()){
                             prettyDialog.cancel();
                         }
+
                     } else {
                         int x = Integer.parseInt(opponentMove.substring(0, 1));
                         int y = Integer.parseInt(opponentMove.substring(1, 2));
                         isPlayerTurn = false;
                         changePicture(x, y);
                         checkForEndGame();
-                        isPlayerTurn = true;
+                        if(!isGameEnd) {
+                            isPlayerTurn = true;
+                        }
                         enableBoard();
-                        textGameplay.setText(playerName + " turn");
+                        textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                     }
                 }
 
@@ -322,25 +328,24 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                         findOpponentButton.setVisibility(View.GONE);
                         openGameButton.setVisibility(View.GONE);
                         textGameplay.setVisibility(View.VISIBLE);
-                        //setButtonState(true);
+                        textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
+                        if(isCreator){
+                            enableBoard();
+                        } else {
+                            disableBoard();
+                        }
+
                     } else {
-                        Log.i("bla bla", "onConnectionResult: connection failed");
-                        satatus.setText("searching");
-//                        disconnect(); //TODO add boolean
-//                        findOpponent();
+                        //Log.i("bla bla", "onConnectionResult: connection failed");
+                        satatus.setText(R.string.searchng);
                     }
                 }
 
                 @Override
                 public void onDisconnected(String endpointId) {
-                    Log.i("bla bla", "onDisconnected: disconnected from the opponent");
-                    Toasty.error(view.getContext().getApplicationContext(), "DISCONNECTED", Toast.LENGTH_SHORT, true).show();
-                    satatus.setText("DISCONNECTED");
-//                    disableBoard();
-//                    resetGame();
-//                    disconnectButton.setVisibility(View.GONE);
-//                    findOpponentButton.setVisibility(View.VISIBLE);
-//                    textGameplay.setVisibility(View.GONE);
+                    //Log.i("bla bla", "onDisconnected: disconnected from the opponent");
+                    Toasty.error(view.getContext().getApplicationContext(), getString(R.string.disconnected), Toast.LENGTH_SHORT, true).show();
+                    satatus.setText(R.string.disconnected);
                 }
             };
 
@@ -364,19 +369,6 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
         super.onStop();
     }
 
-    /** Sends the user's selection of rock, paper, or scissors to the opponent. */
-//    private void sendGameChoice(GameChoice choice) {
-//        myChoice = choice;
-//        connectionsClient.sendPayload(
-//                opponentEndpointId, Payload.fromBytes(choice.name().getBytes(UTF_8)));
-//
-//        setStatusText(getString(R.string.game_choice, choice.name()));
-//        // No changing your mind!
-//        setGameChoicesEnabled(false);
-//    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void setImagesClickListeners() {
         box1.setOnClickListener(this);
         box2.setOnClickListener(this);
@@ -421,7 +413,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                     connectionsClient.sendPayload(
                             opponentEndpointId, Payload.fromBytes("00".getBytes(UTF_8)));
                     disableBoard();
-                    textGameplay.setText(opponentName + " turn");
+                    textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                 }
                 checkForEndGame();
                 break;
@@ -430,7 +422,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                     connectionsClient.sendPayload(
                         opponentEndpointId, Payload.fromBytes("01".getBytes(UTF_8)));
                     disableBoard();
-                    textGameplay.setText(opponentName + " turn");
+                    textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                 }
                 checkForEndGame();
                 break;
@@ -439,7 +431,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                     connectionsClient.sendPayload(
                         opponentEndpointId, Payload.fromBytes("02".getBytes(UTF_8)));
                     disableBoard();
-                    textGameplay.setText(opponentName + " turn");
+                    textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                 }
                 checkForEndGame();
                 break;
@@ -448,7 +440,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                     connectionsClient.sendPayload(
                         opponentEndpointId, Payload.fromBytes("10".getBytes(UTF_8)));
                     disableBoard();
-                    textGameplay.setText(opponentName + " turn");
+                    textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                 }
                 checkForEndGame();
                 break;
@@ -457,7 +449,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                     connectionsClient.sendPayload(
                         opponentEndpointId, Payload.fromBytes("11".getBytes(UTF_8)));
                     disableBoard();
-                    textGameplay.setText(opponentName + " turn");
+                    textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                 }
                 checkForEndGame();
                 break;
@@ -466,7 +458,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                     connectionsClient.sendPayload(
                         opponentEndpointId, Payload.fromBytes("12".getBytes(UTF_8)));
                     disableBoard();
-                    textGameplay.setText(opponentName + " turn");
+                    textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                 }
                 checkForEndGame();
                 break;
@@ -475,7 +467,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                     connectionsClient.sendPayload(
                         opponentEndpointId, Payload.fromBytes("20".getBytes(UTF_8)));
                     disableBoard();
-                    textGameplay.setText(opponentName + " turn");
+                    textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                 }
                 checkForEndGame();
                 break;
@@ -484,7 +476,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                     connectionsClient.sendPayload(
                         opponentEndpointId, Payload.fromBytes("21".getBytes(UTF_8)));
                     disableBoard();
-                    textGameplay.setText(opponentName + " turn");
+                    textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                 }
                 checkForEndGame();
                 break;
@@ -493,7 +485,7 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                     connectionsClient.sendPayload(
                         opponentEndpointId, Payload.fromBytes("22".getBytes(UTF_8)));
                     disableBoard();
-                    textGameplay.setText(opponentName + " turn");
+                    textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                 }
                 checkForEndGame();
                 break;
@@ -594,14 +586,18 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
     private void checkForEndGame() {
         switch (checkForVictory()) {
             case GAME_OVER:
+                isGameEnd = true;
                 showAlert("DRAW", "New game?", R.mipmap.ic_popup_round, "PLAY", "NO");
                 break;
             case NO_WINNER:
+                isGameEnd = false;
                 break;
             case WINNER_PHONE:
+                isGameEnd = true;
                 showAlert("YOU LOST", "New game?", R.mipmap.ic_popup_round, "PLAY", "NO");
                 break;
             case WINNER_PLAYER:
+                isGameEnd = true;
                 showAlert("YOU WON!!!", "New game?", R.mipmap.ic_popup_round, "PLAY", "NO");
                 break;
         }
@@ -622,13 +618,17 @@ public class FragmentConnectToOponent extends Fragment implements View.OnClickLi
                             @Override
                             public void onClick() {
                                 if(isCreator) {
-                                    isPlayerTurn = true;
                                     connectionsClient.sendPayload(
                                             opponentEndpointId, Payload.fromBytes("NEW".getBytes(UTF_8)));
                                     resetGame();
-                                    enableBoard();
-                                    prettyDialog.cancel();
+                                    if(isPlayerTurn) {
+                                        enableBoard();
+                                    } else {
+                                        disableBoard();
+                                    }
                                 }
+                                prettyDialog.cancel();
+                                textGameplay.setText(getString(R.string.turn, isPlayerTurn? playerName : opponentName));
                             }
                         }
                 )

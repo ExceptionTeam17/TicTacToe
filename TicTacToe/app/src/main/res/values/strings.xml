@@ -3,4 +3,8 @@
     <string name="Wins">Wins: %1$d</string>
     <string name="Draws">Draws: %1$d</string>
     <string name="Loses">Loses: %1$d</string>
+    <string name="turn">%1$s turn</string>
+    <string name="searchng">Searching...</string>
+    <string name="waiting">Waiting for opponent</string>
+    <string name="disconnected">DISCONNECTED</string>
 </resources>
